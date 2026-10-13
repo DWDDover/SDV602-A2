@@ -1,8 +1,11 @@
+import FreeSimpleGUI as sg
+
 from data_visualiser import DataVisualiser
 from data_source import DataSource
 from login_view import LoginView
 from remote.remote_app import remote_run
 from local.local_app import local_run
+from remote.register_view import RegisterView
 from user import User
 
 
@@ -12,6 +15,10 @@ if __name__ == "__main__":
 
     while user is None:
         event, values = login_view.window.read()
+
+        if event == sg.WIN_CLOSED:
+            login_view.close()
+            break
 
         if event in ("Login", "__TIMEOUT__"):
             user = User.login(values["-USERNAME-"], values["-PASSWORD-"])
@@ -42,9 +49,6 @@ if __name__ == "__main__":
         if event == "Local Mode" :
             login_view.close()
             local_run()
-        
-        if event == "__WINDOW_CLOSED__":
-            login_view.close()
             break
 
     if user is not None:
