@@ -1,11 +1,9 @@
 from data_visualiser import DataVisualiser
 from data_source import DataSource
 from login_view import LoginView
-from remote.register_view import RegisterView
-from local.local_view import LocalView
+from remote.remote_app import remote_run
+from local.local_app import local_run
 from user import User
-
-from chat_app import run
 
 
 if __name__ == "__main__":
@@ -42,8 +40,8 @@ if __name__ == "__main__":
                     register_view.show_error("Username already exists.")
                     
         if event == "Local Mode" :
-            local_view = LocalView()
-            event, values = local_view.window.read()
+            login_view.close()
+            local_run()
         
         if event == "__WINDOW_CLOSED__":
             login_view.close()
@@ -51,4 +49,4 @@ if __name__ == "__main__":
 
     if user is not None:
         login_view.close()
-        run(user)
+        remote_run(user)
