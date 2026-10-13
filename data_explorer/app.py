@@ -39,6 +39,10 @@ if __name__ == "__main__":
                 
                 else:
                     register_view.show_error("Username already exists.")
+                    
+        if event == "Local Mode" :
+            local_view = LocalView()
+            event, values = local_view.window.read()
         
         if event == "__WINDOW_CLOSED__":
             login_view.close()
