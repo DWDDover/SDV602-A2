@@ -1,4 +1,6 @@
 from .remote_view import RemoteView
+from ..data_visualiser import DataVisualiser
+from ..data_source import DataSource
 import config
 import FreeSimpleGUI as fsg
 
