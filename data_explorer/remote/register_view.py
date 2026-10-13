@@ -7,10 +7,10 @@ class RegisterView:
         sg.theme("DarkBlue")
 
         self.layout = [
-            [sg.Text('Username: ', font='Any 14'), sg.Input(size=(40, 5), key='-USERNAME-', do_not_clear=True)],
-            [sg.Text('Password: ', font='Any 14'), sg.Input(size=(40, 5), key='-PASSWORD-', do_not_clear=True)],
-            [sg.Text('Repeat password: ', font='Any 14'), sg.Input(size=(40, 5), key='-REPEAT_PASSWORD-', do_not_clear=True)],
-            [sg.Button('Create Account', bind_return_key=True)],
+            [sg.Push(), sg.Text('Username: ', font='Any 14'), sg.Input(size=(40, 5), key='-USERNAME-', do_not_clear=True), sg.Push()],
+            [sg.Push(), sg.Text('Password: ', font='Any 14'), sg.Input(size=(40, 5), key='-PASSWORD-', do_not_clear=True), sg.Push()],
+            [sg.Push(), sg.Text('Repeat password: ', font='Any 14'), sg.Input(size=(40, 5), key='-REPEAT_PASSWORD-', do_not_clear=True), sg.Push()],
+            [sg.Button('Create Account', pad=20, size=(15, 2), bind_return_key=True)],
         ]
 
         self.window = sg.Window("Register", self.layout, finalize=True)
