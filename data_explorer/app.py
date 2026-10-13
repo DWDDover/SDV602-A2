@@ -1,7 +1,8 @@
 from data_visualiser import DataVisualiser
 from data_source import DataSource
 from login_view import LoginView
-from register_view import RegisterView
+from remote.register_view import RegisterView
+from local.local_view import LocalView
 from user import User
 
 from chat_app import run
