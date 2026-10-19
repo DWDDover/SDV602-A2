@@ -29,5 +29,17 @@ class TestDataSource(unittest.TestCase):
         ds1.data.append({"name": "Declan", "age": 28})
         self.assertEqual(ds2.columns(), [])
         
+    def test_is_empty_with_data(self):
+        data = [
+            {"name": "Declan", "age": 30},
+            {"name": "Joe", "age": 25}
+        ]
+        ds = DataSource(name="Test Data", data=data)
+        self.assertFalse(ds.is_empty())
+        
+    def test_is_empty_with_empty_data(self):
+        ds = DataSource(name="Empty Data", data=[])
+        self.assertTrue(ds.is_empty())
+        
 if __name__ == '__main__':
     unittest.main()

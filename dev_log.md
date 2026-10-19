@@ -45,6 +45,6 @@ remote_app - The remote app
 The original app.py always loaded the login screen and local mode was launched through a button there, to completemly decouple the modes
 the local, remote, and testing modes now launch through argparse. This means that local mode can be launched when no database exists as the previous login screen imported and depended on pymongo.
 
-
+The first class i made is datasource. I started by making a constructor that takes the name of the data source and its data, the constructor has handlers to replace empty data with and empty list. I looked into the unittesting module and made a test class for the datasource class which tests the columns method with real data, empty data, none data, a compltely empty constructor. and a test to ensure that two data sources do not have a shared state. The way i originally made the class meant that each instance would always reference the same empty list as a default value when no data was given. to fix this the new empty list is made within the constructor rather than in the default values for the method parameter.
 
 

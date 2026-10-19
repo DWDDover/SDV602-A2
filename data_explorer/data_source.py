@@ -24,4 +24,13 @@ class DataSource:
             
         else:
             return list(self.data[0].keys())
+        
+    def is_empty(self):
+        """Check if the data source is empty
+
+        Returns:
+            bool: True if the data source is empty, False otherwise
+        """
+        ## this works because a none data source is always turned into an empty list in constructor
+        return len(self.data) == 0
             
