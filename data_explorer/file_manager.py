@@ -1,4 +1,5 @@
 import csv
+from exceptions import InvalidFileFormatError, EmptyFileError, InvalidFilePathError
 
 
 class FileManager:
@@ -17,8 +18,14 @@ class FileManager:
 
                 for row in reader:
                     data.append(row)
+                    
+                if reader.fieldnames is None:
+                    raise EmptyFileError("File is empty")
 
             return data
 
         except FileNotFoundError:
-            
+            raise InvalidFilePathError("File not found, please check the file path.")
+
+        except csv.Error:
+            raise InvalidFileFormatError("Invalid CSV format")
