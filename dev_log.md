@@ -41,3 +41,10 @@ app - Parses the command line arguments and starts the relevant mode
 test_app - App for testing, runs through the functionality of the app
 local_app - The local app
 remote_app - The remote app
+
+The original app.py always loaded the login screen and local mode was launched through a button there, to completemly decouple the modes
+the local, remote, and testing modes now launch through argparse. This means that local mode can be launched when no database exists as the previous login screen imported and depended on pymongo.
+
+
+
+
