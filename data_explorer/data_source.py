@@ -17,9 +17,9 @@ class DataSource:
         """Return the column names from the data
 
         Returns:
-            list: A list of column names if data is not None, otherwise None
+            list: A list of column names or an mpty list if the data is empoty
         """
-        if self.data == []:
+        if self.is_empty():
             return []
             
         else:
@@ -33,4 +33,34 @@ class DataSource:
         """
         ## this works because a none data source is always turned into an empty list in constructor
         return len(self.data) == 0
+    
+    def is_compatible(self, other):
+        """Checks if the data source compatible with another data source
+
+        Parameters:
+            other (DataSource): The other data source
+            
+        Returns:
+            bool: True if the data sources are compatible, False if not
+        """
+            
+        if self.is_empty() or other.is_empty():
+            return True
+        ## only compatible with exact column match
+        else:
+            return self.columns() == other.columns()
+        
+    def append_data(self, new_data):
+        """Append new data to the data source, changes the source in place
+
+        Parameters:
+            new_data (list of dicts): The new data to append
+            
+        Raises:
+            ValueError: If the new data is not compatible with the existing data
+        """
+        if not self.is_compatible(DataSource(data=new_data)):
+            raise ValueError("New data is not compatible with existing data")
+        
+        self.data.extend(new_data)
             

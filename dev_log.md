@@ -47,4 +47,10 @@ the local, remote, and testing modes now launch through argparse. This means tha
 
 The first class i made is datasource. I started by making a constructor that takes the name of the data source and its data, the constructor has handlers to replace empty data with and empty list. I looked into the unittesting module and made a test class for the datasource class which tests the columns method with real data, empty data, none data, a compltely empty constructor. and a test to ensure that two data sources do not have a shared state. The way i originally made the class meant that each instance would always reference the same empty list as a default value when no data was given. to fix this the new empty list is made within the constructor rather than in the default values for the method parameter.
 
+Next i gave it an is_empty method to check whether a data source has any rows, this will be used within other methods as a helper. I also gave it a method to check if two data sources are compatible that will be used before appending some data to other data. This method jsut checks that either one or both sources are empty or that the column names are an exact match. Im unsure if thjis will need to be changed later if potentially i need to append data with the same base columns and also some new columns, or if the same colums exist but in another order. Tests were added to test these two new methods.
+
+In data source i decided to add the append method here rather than in file manager because data source is responsible for the data when it is in memory. this means file manager will be responsible for the saving and loading of the files but not manipulating the actual data. The append method will first check compatibility and return an exception is that check fails. this will be used later in a GUI dialogue popup. As with the other methods I added tests to the test class for each case and continued running them as i go. This method completes datasource fucntionailiy for what is needed in local mode.
+
+
+
 

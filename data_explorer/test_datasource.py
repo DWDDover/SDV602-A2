@@ -41,5 +41,75 @@ class TestDataSource(unittest.TestCase):
         ds = DataSource(name="Empty Data", data=[])
         self.assertTrue(ds.is_empty())
         
+    def test_is_compatible_with_compatible_columns(self):
+        data1 = [
+            {"name": "Declan", "age": 30},
+            {"name": "Joe", "age": 25}
+        ]
+        data2 = [
+            {"name": "name1", "age": 28},
+            {"name": "name2", "age": 32}
+        ]
+        ds1 = DataSource(name="Data Source 1", data=data1)
+        ds2 = DataSource(name="Data Source 2", data=data2)
+        self.assertTrue(ds1.is_compatible(ds2))
+        
+    def test_is_compatible_with_wrong_columns(self):
+        data1 = [
+            {"name": "Declan", "age": 30},
+            {"name": "Joe", "age": 25}
+        ]
+        data2 = [
+            {"name": "name1", "height": 170},
+            {"name": "name2", "height": 180}
+        ]
+        ds1 = DataSource(name="Data Source 1", data=data1)
+        ds2 = DataSource(name="Data Source 2", data=data2)
+        self.assertFalse(ds1.is_compatible(ds2))
+        
+    def test_is_compatible_with_empty_datasource(self):
+        data1 = [
+            {"name": "Declan", "age": 30},
+            {"name": "Joe", "age": 25}
+        ]
+        ds1 = DataSource(name="Data Source 1", data=data1)
+        ds2 = DataSource(name="Empty Data Source", data=[])
+        self.assertTrue(ds1.is_compatible(ds2))
+        
+    def test_append_data_with_compatible_data(self):
+        data1 = [
+            {"name": "Declan", "age": 30},
+            {"name": "Joe", "age": 25}
+        ]
+        data2 = [
+            {"name": "name1", "age": 28},
+            {"name": "name2", "age": 32}
+        ]
+        ds1 = DataSource(name="Data Source 1", data=data1)
+        ds1.append_data(data2)
+        self.assertEqual(len(ds1.data), 4)
+        
+    def test_append_data_with_incompatible_data(self):
+        data1 = [
+            {"name": "Declan", "age": 30},
+            {"name": "Joe", "age": 25}
+        ]
+        data2 = [
+            {"name": "name1", "height": 170},
+            {"name": "name2", "height": 180}
+        ]
+        ds1 = DataSource(name="Data Source 1", data=data1)
+        with self.assertRaises(ValueError):
+            ds1.append_data(data2)
+            
+    def test_append_data_with_empty_datasource(self):
+        data1 = [
+            {"name": "Declan", "age": 30},
+            {"name": "Joe", "age": 25}
+        ]
+        ds1 = DataSource(name="Empty Data Source", data=[])
+        ds1.append_data(data1)
+        self.assertEqual(len(ds1.data), 2)
+
 if __name__ == '__main__':
     unittest.main()
