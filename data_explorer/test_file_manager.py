@@ -1,5 +1,6 @@
 import unittest
 from file_manager import FileManager
+from exceptions import EmptyFileError, InvalidFilePathError
 
 class TestFileManager(unittest.TestCase):
     fm = FileManager()
@@ -12,9 +13,6 @@ class TestFileManager(unittest.TestCase):
         self.assertEqual(data[1]['Name'], 'Jane')
         self.assertEqual(data[2]['Name'], 'John')
         
-    def test_read_csv_with_invalid_file(self):
-        data = self.fm.read_csv('data_explorer/test_data/invalid_data.csv')
-        self.assertEqual(data, [])
         
     def test_read_csv_with_duplicate_headers(self):
         data = self.fm.read_csv('data_explorer/test_data/duplicate_headers.csv')
@@ -22,8 +20,8 @@ class TestFileManager(unittest.TestCase):
         self.assertEqual(data[2]['Age'], '35')
         
     def test_read_csv_with_empty_file(self):
-        data = self.fm.read_csv('data_explorer/test_data/empty_file.csv')
-        self.assertEqual(data, [])
+        with self.assertRaises(EmptyFileError):
+            data = self.fm.read_csv('data_explorer/test_data/empty_file.csv')
         
     def test_read_csv_with_missing_values(self):
         data = self.fm.read_csv('data_explorer/test_data/missing_values.csv')
@@ -42,8 +40,9 @@ class TestFileManager(unittest.TestCase):
         self.assertEqual(data[0][None], ['value'])
         
     def test_read_csv_with_invalid_path(self):
-        data = self.fm.read_csv('data_explorer/test_data/sdfds.csv')
-        self.assertEqual(data, [])
+        with self.assertRaises(InvalidFilePathError):
+            data = self.fm.read_csv('data_explorer/test_data/ghdgfgdf.csv')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -57,7 +57,9 @@ In data source i decided to add the append method here rather than in file manag
 
 To continue with the pattern of making tests as I go i created 5 different .csv files to test different behaviour, a vlid csv file, an empty file, duplicate headers, extra fields, missing fields, an invalid file, and a file with only headers. The current file_manager starter code prints errors to the console but this will be chanegd to return exception that can be displayed in GUI popups. The append_file method was removed as this is handled by DataSource now. As I am writing the local mode functionality first the methods write_file, read_file, and print_file are unnecessary and are also removed. With just read_file left i wrote out the unit tests to check behaviour on each of the types of files ensuring they are all handled correclty.
 
-At this point i decided to create an exceptions module to handle the exceptions in the code so far. This module contains classes that inherit from exception to handle unique cases within the application.
+At this point i decided to create an exceptions module to handle the exceptions in the code so far. This module contains classes that inherit from exception to handle unique cases within the application. The module is currently imported into DataSource and FileManager and handles empty CSV files, invalid file paths, and incompatible data for appending.
+
+
 
 
 
