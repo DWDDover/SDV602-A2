@@ -1,5 +1,6 @@
 import unittest
 from data_source import DataSource
+from exceptions import IncompatibleDataSourceError
 
 class TestDataSource(unittest.TestCase):
     def test_columns_with_data(self):
@@ -99,7 +100,7 @@ class TestDataSource(unittest.TestCase):
             {"name": "name2", "height": 180}
         ]
         ds1 = DataSource(name="Data Source 1", data=data1)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IncompatibleDataSourceError):
             ds1.append_data(data2)
             
     def test_append_data_with_empty_datasource(self):

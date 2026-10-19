@@ -1,3 +1,5 @@
+from exceptions import IncompatibleDataSourceError
+
 class DataSource:
     """A class used to represent a data source."""
     def __init__(self, name="", data=None):
@@ -57,10 +59,10 @@ class DataSource:
             new_data (list of dicts): The new data to append
             
         Raises:
-            ValueError: If the new data is not compatible with the existing data
+            IncompatibleDataSourceError: If the new data is not compatible with the existing data
         """
         if not self.is_compatible(DataSource(data=new_data)):
-            raise ValueError("New data is not compatible with existing data")
+            raise IncompatibleDataSourceError("New data is not compatible with existing data")
         
         self.data.extend(new_data)
             
