@@ -13,7 +13,7 @@ class DataVisualiser:
 
     ##method to prepare the data from the data source for plotting a line chart
     def create_chart_data(self, x_key, y_key, series_key=None):
-        if not self.data_source:
+        if self.data_source is None or self.data_source.is_empty():
             raise EmptyFileError("No data to plot!")
 
         series = {}
