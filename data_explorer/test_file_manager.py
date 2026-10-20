@@ -1,5 +1,5 @@
 import unittest
-from file_manager import FileManager
+from data_explorer.model.file_manager import FileManager
 from exceptions import EmptyFileError, InvalidFilePathError
 
 class TestFileManager(unittest.TestCase):

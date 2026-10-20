@@ -1,6 +1,6 @@
 from exceptions import EmptyFileError
 from operator import itemgetter
-from chart_data import ChartData
+from data_explorer.model.chart_data import ChartData
 
 
 class DataVisualiser:

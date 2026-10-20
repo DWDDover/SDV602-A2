@@ -1,5 +1,5 @@
 import unittest
-from data_source import DataSource
+from data_explorer.model.data_source import DataSource
 from exceptions import IncompatibleDataSourceError
 
 class TestDataSource(unittest.TestCase):
