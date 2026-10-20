@@ -12,7 +12,7 @@ class DataVisualiser:
         self.series_key = series_key
 
     ##method to prepare the data from the data source for plotting a line chart
-    def create_chart_data(self, x_key, y_key, title, series_key=None):
+    def create_chart_data(self, x_key, y_key, series_key=None):
         if not self.data_source:
             raise EmptyFileError("No data to plot!")
 
@@ -30,6 +30,10 @@ class DataVisualiser:
             for row in rows:
                 x_values.append(row[x_key])
                 y_values.append(float(row[y_key]))
+                
+            series[name] = (x_values, y_values)
+            
+        return ChartData(x_key, y_key, series)
                 
 
 
