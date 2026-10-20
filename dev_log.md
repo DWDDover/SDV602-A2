@@ -59,7 +59,9 @@ To continue with the pattern of making tests as I go i created 5 different .csv 
 
 At this point i decided to create an exceptions module to handle the exceptions in the code so far. This module contains classes that inherit from exception to handle unique cases within the application. The module is currently imported into DataSource and FileManager and handles empty CSV files, invalid file paths, and incompatible data for appending.
 
+## DataVisualiser
 
+The skeleton of data visualiser from the starter code contains unnecessary methods that can be found in other classes now, i started by removing these methods, load_data, append_data, load_data_source, and _load_csv. plot_line_chart will be seperated so that the actual display happens in the DES view class to be made later and this class jsut prepares the data to be visualised. This decoupling was done to adhere to the MVC architecture and enable further testing that doesnt require a GUI. I decided to make a chart data class that can be returned by this method and passed into the actual chart view that contains everything matplotlib needs to draw the chart. plot_line_chart is now called create_chart_data. the chart data class holds the title of the chart, the two axis labels, and a dictionary of the series of the chart, with a series name and a pair of lists, x and y values, for each series.
 
 
 
