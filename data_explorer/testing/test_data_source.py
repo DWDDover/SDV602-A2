@@ -1,6 +1,6 @@
 import unittest
 from data_explorer.model.data_source import DataSource
-from exceptions import IncompatibleDataSourceError
+from data_explorer.exceptions import IncompatibleDataSourceError
 
 class TestDataSource(unittest.TestCase):
     def test_columns_with_data(self):
@@ -27,7 +27,7 @@ class TestDataSource(unittest.TestCase):
     def test_source_states(self):
         ds1 = DataSource()
         ds2 = DataSource()
-        ds1.data.append({"name": "Declan", "age": 28})
+        ds1.data.extend({"name": "Declan", "age": 28})
         self.assertEqual(ds2.columns(), [])
         
     def test_is_empty_with_data(self):
@@ -77,7 +77,7 @@ class TestDataSource(unittest.TestCase):
         ds2 = DataSource(name="Empty Data Source", data=[])
         self.assertTrue(ds1.is_compatible(ds2))
         
-    def test_append_data_with_compatible_data(self):
+    def test_extend_data_with_compatible_data(self):
         data1 = [
             {"name": "Declan", "age": 30},
             {"name": "Joe", "age": 25}
@@ -87,10 +87,10 @@ class TestDataSource(unittest.TestCase):
             {"name": "name2", "age": 32}
         ]
         ds1 = DataSource(name="Data Source 1", data=data1)
-        ds1.append_data(data2)
+        ds1.extend_data(data2)
         self.assertEqual(len(ds1.data), 4)
         
-    def test_append_data_with_incompatible_data(self):
+    def test_extend_data_with_incompatible_data(self):
         data1 = [
             {"name": "Declan", "age": 30},
             {"name": "Joe", "age": 25}
@@ -101,15 +101,15 @@ class TestDataSource(unittest.TestCase):
         ]
         ds1 = DataSource(name="Data Source 1", data=data1)
         with self.assertRaises(IncompatibleDataSourceError):
-            ds1.append_data(data2)
+            ds1.extend_data(data2)
             
-    def test_append_data_with_empty_datasource(self):
+    def test_extend_data_with_empty_datasource(self):
         data1 = [
             {"name": "Declan", "age": 30},
             {"name": "Joe", "age": 25}
         ]
         ds1 = DataSource(name="Empty Data Source", data=[])
-        ds1.append_data(data1)
+        ds1.extend_data(data1)
         self.assertEqual(len(ds1.data), 2)
 
 if __name__ == '__main__':

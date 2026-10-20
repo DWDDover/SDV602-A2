@@ -1,4 +1,4 @@
-from data_explorer.model.file_manager import FileManager
+from data_explorer.data.file_manager import FileManager
 
 class RemoteController:
     ...

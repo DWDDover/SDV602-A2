@@ -4,7 +4,7 @@ Initial project work involved setting up the repository and file layout for the 
 
 I decided to keep modules that are used in both modes within the data_explorer folder, which contains a sub folder for the local and remote modes. Modules used only by these modes will be kept within the relevant folder.
 
-I started by taking code excerpts and modules form the in class sessions that are reusable and refactoring them for the application. 
+I started by taking code excerpts and modules form the in class sessions that are reusable and refactoring them for the application.
 
 The login window was the first, I updated the layout to more represent my designs and added a third button to start in local mode. The login window imports both a local_run and remote_run function from their relevant modules. This seperation will allow me to work on each mode seperately as they will both have different requirements and functionality.
 
@@ -63,6 +63,4 @@ At this point i decided to create an exceptions module to handle the exceptions 
 
 The skeleton of data visualiser from the starter code contains unnecessary methods that can be found in other classes now, i started by removing these methods, load_data, append_data, load_data_source, and _load_csv. plot_line_chart will be seperated so that the actual display happens in the DES view class to be made later and this class jsut prepares the data to be visualised. This decoupling was done to adhere to the MVC architecture and enable further testing that doesnt require a GUI. I decided to make a chart data class that can be returned by this method and passed into the actual chart view that contains everything matplotlib needs to draw the chart. plot_line_chart is now called create_chart_data. the chart data class holds the title of the chart, the two axis labels, and a dictionary of the series of the chart, with a series name and a pair of lists, x and y values, for each series.
 
-
-
-
+At this point I reanranged the structure to include a folder for each of view, model, and controller and moved the relevant files into each one. I also moved the test files into a testing folder and created scripts for running each one in order to save time typing out the file paths into the terminal each time.

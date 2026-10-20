@@ -1,5 +1,5 @@
 import sys
-from data_explorer.test_app import testing_run
+from data_explorer.testing.test_app import testing_run
 from local_app import local_run
 from data_explorer.remote_app import remote_run
 

@@ -1,4 +1,4 @@
-from exceptions import EmptyFileError
+from ..exceptions import EmptyFileError
 from operator import itemgetter
 from data_explorer.model.chart_data import ChartData
 
@@ -35,5 +35,4 @@ class DataVisualiser:
             
         return ChartData(x_key, y_key, series)
                 
-
 

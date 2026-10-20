@@ -1,5 +1,5 @@
 import csv
-from exceptions import InvalidFileFormatError, EmptyFileError, InvalidFilePathError
+from ..exceptions import InvalidFileFormatError, EmptyFileError, InvalidFilePathError
 
 
 class FileManager:
@@ -9,7 +9,14 @@ class FileManager:
         pass
 
     def read_csv(self, file_name):
-        """Reads a CSV file and returns the data as a list of dictionaries."""
+        """Reads a CSV file and returns the data as a list of dictionaries.
+        
+        Parameters:
+            file_name (string): The file path of the file to be read
+            
+        Returns:
+            data (list): The data from the CSV
+        """
         ## empty list fits the format in data source
         data = []
         try:

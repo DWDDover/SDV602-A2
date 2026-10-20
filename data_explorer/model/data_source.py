@@ -1,4 +1,4 @@
-from exceptions import IncompatibleDataSourceError
+from ..exceptions import IncompatibleDataSourceError
 
 class DataSource:
     """A class used to represent a data source."""
@@ -31,19 +31,19 @@ class DataSource:
         """Check if the data source is empty
 
         Returns:
-            bool: True if the data source is empty, False otherwise
+            bool: True if the data sourc is empty false if not
         """
         ## this works because a none data source is always turned into an empty list in constructor
         return len(self.data) == 0
     
     def is_compatible(self, other):
-        """Checks if the data source compatible with another data source
+        """Check if the data source compaible with another data source
 
         Parameters:
             other (DataSource): The other data source
             
         Returns:
-            bool: True if the data sources are compatible, False if not
+            bool: True if the data sources are compatible otherwise false
         """
             
         if self.is_empty() or other.is_empty():
@@ -52,7 +52,7 @@ class DataSource:
         else:
             return self.columns() == other.columns()
         
-    def append_data(self, new_data):
+    def extend_data(self, new_data):
         """Append new data to the data source, changes the source in place
 
         Parameters:
