@@ -64,3 +64,13 @@ At this point i decided to create an exceptions module to handle the exceptions 
 The skeleton of data visualiser from the starter code contains unnecessary methods that can be found in other classes now, i started by removing these methods, load_data, append_data, load_data_source, and _load_csv. plot_line_chart will be seperated so that the actual display happens in the DES view class to be made later and this class jsut prepares the data to be visualised. This decoupling was done to adhere to the MVC architecture and enable further testing that doesnt require a GUI. I decided to make a chart data class that can be returned by this method and passed into the actual chart view that contains everything matplotlib needs to draw the chart. plot_line_chart is now called create_chart_data. the chart data class holds the title of the chart, the two axis labels, and a dictionary of the series of the chart, with a series name and a pair of lists, x and y values, for each series.
 
 At this point I reanranged the structure to include a folder for each of view, model, and controller and moved the relevant files into each one. I also moved the test files into a testing folder and created scripts for running each one in order to save time typing out the file paths into the terminal each time.
+
+Fully rearranged the structure of the project at this point, now 5 folders, testing, model, view, controller, and data. data folder will hold classes that access the data sucha s database_manager and the new message_repository and user_repository classes. file_manager was also moved here as it provides a similar function by accessing local files.
+
+## User
+
+simple user class in the model folder, holds a user_id and a username, as well as dundermethod for defining its string representation, mostly for debugging.
+
+## User repository
+
+Made a user repository class responsible for accessing the users collection. This class contains the login and save methods that used to belong to user, now called login and register. This class also creates an instance of database manager in its constructor so it can use its save and find by id methods. Progress is much faster at this point as I have decided to forego making unit tests alongside development, as well as the work from my original attempt being more usable. 
