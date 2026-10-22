@@ -1,5 +1,4 @@
 import FreeSimpleGUI as sg
-
 from data_explorer.controller.remote_controller import RemoteController
 from data_explorer.data.user_repository import UserRepository
 from data_explorer.view.login_view import LoginView

@@ -8,7 +8,7 @@ class LoginView:
 
         self.layout = [
             [sg.Push(), sg.Text('Username: ', font='Any 14'), sg.Input(size=(40, 5), key='-USERNAME-', do_not_clear=True), sg.Push()],
-            [sg.Push(), sg.Text('Password: ', font='Any 14'), sg.Input(size=(40, 5), key='-PASSWORD-', do_not_clear=True), sg.Push()],
+            [sg.Push(), sg.Text('Password: ', font='Any 14'), sg.Input(size=(40, 5), key='-PASSWORD-', password_char='*', do_not_clear=True), sg.Push()],
             [
             (sg.Button('Login', pad=20, size=(15, 2), bind_return_key=True)),
             (sg.Button('Register', pad=20, size=(15, 2), bind_return_key=True)),

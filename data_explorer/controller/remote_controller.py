@@ -4,7 +4,8 @@ class RemoteController:
     
     def __init__(self, user):
         self.user = user
-        self.file_manager = FileManager(user)
+        self.file_manager = FileManager()
+        
 
     def run(self):
         pass

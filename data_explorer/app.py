@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
 
+## allows for running the app from the command line without having to install it as a package
 if not __package__:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
