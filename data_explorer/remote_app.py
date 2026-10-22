@@ -1,5 +1,5 @@
-from data_explorer.controller.remote_controller import RemoteController
+from data_explorer.controller.login_controller import LoginController
 
 def remote_run():
-    rc = RemoteController()
-    rc.run()
+    lc = LoginController()
+    lc.run()

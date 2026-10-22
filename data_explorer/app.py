@@ -1,6 +1,11 @@
 import sys
+from pathlib import Path
+
+if not __package__:
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 from data_explorer.testing.test_app import testing_run
-from local_app import local_run
+from data_explorer.local_app import local_run
 from data_explorer.remote_app import remote_run
 
 TESTING = '--testing' in sys.argv

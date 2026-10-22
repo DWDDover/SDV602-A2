@@ -1,5 +1,5 @@
-from database_manager import DatabaseManager
-from model.user import User
+from data_explorer.data.database_manager import DatabaseManager
+from data_explorer.model.user import User
 import bcrypt
 
 ##methods: login, regfister

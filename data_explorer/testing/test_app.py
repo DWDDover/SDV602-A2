@@ -6,4 +6,3 @@ from data_explorer.testing.test_file_manager import TestFileManager
 
 def testing_run():
     ...
-

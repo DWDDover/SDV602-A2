@@ -1,6 +1,9 @@
-from view.login_view import LoginView
-from view.register_view import RegisterView
-from data.user_repository import UserRepository
+import FreeSimpleGUI as sg
+
+from data_explorer.controller.remote_controller import RemoteController
+from data_explorer.data.user_repository import UserRepository
+from data_explorer.view.login_view import LoginView
+from data_explorer.view.register_view import RegisterView
 
 class LoginController:
     
