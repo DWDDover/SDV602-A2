@@ -20,7 +20,7 @@ class LocalView:
             ]
         ]
         
-        self.window = sg.Window("Local Mode", self.layout, size=(600, 430), finalize=True)
+        self.window = sg.Window("Local Mode", self.layout, size=(900, 430), finalize=True)
         
     def close(self):
         self.window.close()
