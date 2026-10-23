@@ -11,8 +11,7 @@ class LoginView:
             [sg.Push(), sg.Text('Password: ', font='Any 14'), sg.Input(size=(40, 5), key='-PASSWORD-', password_char='*', do_not_clear=True), sg.Push()],
             [
             (sg.Button('Login', pad=20, size=(15, 2), bind_return_key=True)),
-            (sg.Button('Register', pad=20, size=(15, 2), bind_return_key=True)),
-            (sg.Button('Local Mode', pad=20, size=(15, 2), bind_return_key=True))
+            (sg.Button('Register', pad=20, size=(15, 2))),
             ]
         ]
 
