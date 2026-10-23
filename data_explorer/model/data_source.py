@@ -2,14 +2,13 @@ from ..exceptions import IncompatibleDataSourceError
 
 class DataSource:
     """A class used to represent a data source."""
-    def __init__(self, name="", data=None):
+    def __init__(self, data=None):
         """ Initialise a new data source instance
         
         Parameters:
         name (str): the name of the data source
         data (list of dicts): the data held by the data source """
         
-        self.name = name
         if data is None:
             self.data = []
         else:
