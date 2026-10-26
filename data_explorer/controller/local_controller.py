@@ -1,5 +1,5 @@
-from multiprocessing.dummy import Process
-
+from threading import Thread
+from ..exceptions import DataExplorerException
 import FreeSimpleGUI as sg
 
 from data_explorer.controller.data_visualiser import DataVisualiser
@@ -14,6 +14,7 @@ class LocalController:
         file_manager = FileManager()
         local_view = LocalView()
         ds = None
+        active_des = []
 
         while True:
             event, values = local_view.window.read()
@@ -24,39 +25,48 @@ class LocalController:
             
             if event == "-FILE-":
                 selected_file_path = values["-FILE-"]
-                ds = DataSource(file_manager.read_csv(selected_file_path))
-                local_view.window["-X-AXIS-"].update(values=(ds.columns()))
-                local_view.window["-Y-AXIS-"].update(values=(ds.columns()))
-                local_view.window["-SERIES_KEY-"].update(values=(ds.columns()))
-                
+                try:
+                    ds = DataSource(file_manager.read_csv(selected_file_path))
+                    local_view.window["-X-AXIS-"].update(values=(ds.columns()))
+                    local_view.window["-Y-AXIS-"].update(values=(ds.columns()))
+                    local_view.window["-SERIES_KEY-"].update(values=(ds.columns()))
+                except DataExplorerException as e:
+                    local_view.show_error(f"Error reading CSV file: {str(e)}")
+                    continue
+
             if event == "Generate DES":
                 
                 if ds is None:
                     local_view.show_error("Please select a CSV file first.")
                     continue
 
-                x_key = values["-X-AXIS-"]
-                y_key = values["-Y-AXIS-"]
-                series_key = values["-SERIES_KEY-"]
-
-                if not x_key or not y_key or not series_key:
-                    local_view.show_error("Please select x-axis, y-axis, and series key.")
+                try:
+                    x_key = values["-X-AXIS-"]
+                    y_key = values["-Y-AXIS-"]
+                except Exception as e:
+                    local_view.show_error(f"Error reading input values: {str(e)}")
                     continue
                 
-                active_des = []
-                dc = DESController(ds)
-                process = Process(target=dc.local_des_run)
-                process.start()
-                active_des.append(process)
+                series_key = values["-SERIES_KEY-"]
+
+                if not x_key or not y_key:
+                    local_view.show_error("Please select x-axis and y-axis.")
+                    continue
                 
+                                
                 dv = DataVisualiser(ds, x_key, y_key, series_key)
                 
-                chart_data = dv.create_chart_data(x_key, y_key, series_key)
+                try:
+                    chart_data = dv.create_chart_data(x_key, y_key, series_key)
+                except DataExplorerException as e:
+                    local_view.show_error(str(e))
+                    continue
                 
-                # Generate the DES (Data Exploration Summary)
-                des = ds.generate_des(chart_data)
+                dc = DESController(chart_data, LocalDESView)
+                thread = Thread(target=dc.run)
+                thread.start()
+                active_des.append(thread)
+
                 
-                # Show the DES in a popup
-                local_view.show_message(des)
                 
                 

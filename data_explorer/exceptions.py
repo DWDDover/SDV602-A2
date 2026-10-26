@@ -12,3 +12,9 @@ class InvalidFilePathError(Exception):
     
 class IncompatibleDataSourceError(Exception):
     """Exception raised for incompatible data sources."""
+    
+class NonNumericDataError(DataExplorerException):
+    """Exception raised for non-numeric data in the dataset selected for the y axis."""
+    
+class NonColumnKeyError(DataExplorerException):
+    """Exception raised for non-column keys in the dataset selected for the x axis or series key."""

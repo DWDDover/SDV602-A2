@@ -11,7 +11,7 @@ class LocalDESView:
             [],
         ]
         
-        self.window = sg.Window("Local Mode", self.layout, size=(900, 430), finalize=True)
+        self.window = sg.Window("Local DES", self.layout, size=(900, 430), finalize=True)
         
     def close(self):
         self.window.close()

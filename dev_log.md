@@ -90,6 +90,10 @@ A small problem I had with the login controller logic holding the logic for the 
 
 While making the local view I realised that it would make sense to make the view and the controller alongside each other. My local view was kept the same as the design, just asking the user to select a file, the x and y axis labels, and the series key. I used an event on file selection to update the series key dropdown with the column list from the chosen file. This was done by creating a DataSource object upon file selection and using its columns() method I had made previously. 
 
+An issue I encountered here during testing was selecting a non numeric x axis to pass into the data visualiser. I created a new exception to handle this error that could be passed up to the local window and display the error to the user. This error will be caught when creating chart data and returns the non numeric value. While doing this i also wrapped the other parts of local_controller in their own try excepts, such as for when the file cant be read as a csv, or no selection was made in one of the dropwdowns. I also added new exceptions in data visualiser to check that the x key, y key, and series key are all actually columns in the give3n data. 
+
+For the multiprocessing requirement i decided to use thread instead of process. The functionality is similar but the assessmnent specifies threads, this also deos not require the process termination loop in the view closing as the threads are owned by the main process and will close automatically upon closing the main local mode form.
+
 
 
 
