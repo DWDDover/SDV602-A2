@@ -9,7 +9,7 @@ class DESController:
     def run(self):
 
         self.view = self.view_factory(self.chart_data)
-         
+
         while True:
             event, values = self.view.window.read()
             

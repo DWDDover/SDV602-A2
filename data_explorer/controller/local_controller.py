@@ -1,4 +1,4 @@
-from processing import Process
+from multiprocessing import Process
 from ..exceptions import DataExplorerException
 import FreeSimpleGUI as sg
 
@@ -38,6 +38,8 @@ class LocalController:
 
             if event == "Generate DES":
                 
+                chart_title = 'Untitled Chart'
+                
                 if ds is None:
                     local_view.show_error("Please select a CSV file first.")
                     continue
@@ -51,6 +53,9 @@ class LocalController:
                 
                 series_key = values["-SERIES_KEY-"]
 
+                if values["-TITLE-"]:
+                    chart_title = values["-TITLE-"]
+                
                 if not x_key or not y_key:
                     local_view.show_error("Please select x-axis and y-axis.")
                     continue
@@ -59,7 +64,7 @@ class LocalController:
                 dv = DataVisualiser(ds, x_key, y_key, series_key)
                 
                 try:
-                    chart_data = dv.create_chart_data(x_key, y_key, series_key)
+                    chart_data = dv.create_chart_data(chart_title, x_key, y_key, series_key)
                 except DataExplorerException as e:
                     local_view.show_error(str(e))
                     continue

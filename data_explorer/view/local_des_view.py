@@ -7,8 +7,10 @@ class LocalDESView:
         sg.theme("LightBlue3")
         
         self.layout = [
-            [],
-            [],
+            [sg.Push(), sg.Text(f"{chart_data.title}"), sg.Push()],
+            [sg.Canvas()],
+            [sg.Button('Change data source', pad=20, size=(15, 2))],
+            [sg.Button('Append to data source', pad=20, size=(15, 2))],
         ]
         
         self.window = sg.Window("Local DES", self.layout, size=(900, 430), finalize=True)
