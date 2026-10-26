@@ -74,11 +74,11 @@ simple user class in the model folder, holds a user_id and a username, as well a
 
 ## User repository
 
-Made a user repository class responsible for accessing the users collection. This class contains the login and save methods that used to belong to user, now called login and register. This class also creates an instance of database manager in its constructor so it can use its save and find by id methods. Progress is much faster at this point as I have decided to forego making unit tests alongside development, as well as the work from my original attempt being more usable. 
+Made a user repository class responsible for accessing the users collection. This class contains the login and save methods that used to belong to user, now called login and register. This class also creates an instance of database manager in its constructor so it can use its save and find by id methods. Progress is much faster at this point as I have decided to forego making unit tests alongside development, as well as the work from my original attempt being more usable.
 
 ## Login view
 
-At this point I wanted to start making the login controller that will access the user repository. I decided to make the login_view first as the buttons and fields on the form will determine the event readers in the controller. This only required some minor adjustments to the login_view I had previously created. 
+At this point I wanted to start making the login controller that will access the user repository. I decided to make the login_view first as the buttons and fields on the form will determine the event readers in the controller. This only required some minor adjustments to the login_view I had previously created.
 
 It seems like the best way to go forward would be to create all the views first as close as possible to the ones im my designs, FreeSimpleGUI does not make this easy but I will at least ensure they have all the buttons and fields from my designs. Making the views first will also allow me to easily see all the events I need handlers for in the various controllers.
 
@@ -88,12 +88,6 @@ A small problem I had with the login controller logic holding the logic for the 
 
 ## Local view, Local controller
 
-While making the local view I realised that it would make sense to make the view and the controller alongside each other. My local view was kept the same as the design, just asking the user to select a file, the x and y axis labels, and the series key. I used an event on file selection to update the series key dropdown with the column list from the chosen file. This was done by creating a DataSource object upon file selection and using its columns() method I had made previously. 
+While making the local view I realised that it would make sense to make the view and the controller alongside each other. My local view was kept the same as the design, just asking the user to select a file, the x and y axis labels, and the series key. I used an event on file selection to update the series key dropdown with the column list from the chosen file. This was done by creating a DataSource object upon file selection and using its columns() method I had made previously.
 
-An issue I encountered here during testing was selecting a non numeric x axis to pass into the data visualiser. I created a new exception to handle this error that could be passed up to the local window and display the error to the user. This error will be caught when creating chart data and returns the non numeric value. While doing this i also wrapped the other parts of local_controller in their own try excepts, such as for when the file cant be read as a csv, or no selection was made in one of the dropwdowns. I also added new exceptions in data visualiser to check that the x key, y key, and series key are all actually columns in the give3n data. 
-
-For the multiprocessing requirement i decided to use thread instead of process. The functionality is similar but the assessmnent specifies threads, this also deos not require the process termination loop in the view closing as the threads are owned by the main process and will close automatically upon closing the main local mode form.
-
-
-
-
+An issue I encountered here during testing was selecting a non numeric x axis to pass into the data visualiser. I created a new exception to handle this error that could be passed up to the local window and display the error to the user. This error will be caught when creating chart data and returns the non numeric value. While doing this i also wrapped the other parts of local_controller in their own try excepts, such as for when the file cant be read as a csv, or no selection was made in one of the dropwdowns. I also added new exceptions in data visualiser to check that the x key, y key, and series key are all actually columns in the give3n data.
