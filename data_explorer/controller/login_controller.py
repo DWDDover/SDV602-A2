@@ -31,18 +31,33 @@ class LoginController:
 
             if event == "Register":
                 register_view = RegisterView()
-                event, values = register_view.window.read()
-                
-                if event == "Create Account":
-                    new_user = ur.register(values["-USERNAME-"], values["-PASSWORD-"])
+                new_user = None
 
-                    if new_user is not None:
-                        register_view.show_message("User created successfully")
+                while new_user is None:
+                    event, values = register_view.window.read()
+
+                    if event == sg.WIN_CLOSED:
                         register_view.close()
-                        continue
-                    
-                    else:
-                        register_view.show_error("Username already exists.")
+                        break
+                
+                    if event == "Create Account":
+                        if not values["-USERNAME-"] or not values["-PASSWORD-"]:
+                            register_view.show_error("Please fill in both username and password fields.")
+                            continue
+                        
+                        if values["-PASSWORD-"] != values['-REPEAT_PASSWORD-']:
+                            register_view.show_error("Passwords do not match.")
+                            continue
+                        
+                        new_user = ur.register(values["-USERNAME-"], values["-PASSWORD-"])
+
+                        if new_user is not None:
+                            register_view.show_message("User created successfully")
+                            register_view.close()
+                            continue
+                        
+                        else:
+                            register_view.show_error("Username already exists.")
 
         if user is not None:
             login_view.close()

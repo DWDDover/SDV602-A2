@@ -20,9 +20,8 @@ LoginView - The login GUI for remote mode
 RegisterView - The registration GUI for remote mode
 LocalView - The main GUI for local mode
 RemoteView - The main GUI for remote mode
-ChatView - The chat window for a remote DES
-LocalDESView - The DES window for a local session
-RemoteDESView - The DES window for a remote lobby
+DESView - The DES window for a local session
+LobbyView - The DES window for a remote lobby
 
 ### Model
 
@@ -32,15 +31,17 @@ DataSource - Holds the data read from a file
 User - Holds user information
 Message - Holds message information
 DESSession - Holds session information for a DES
-DataVisualiser - Maps the data to a chart
 ChatRoom - Holds session information for a remote lobby chat room
 
 ### Controller
 
 app - Parses the command line arguments and starts the relevant mode
 test_app - App for testing, runs through the functionality of the app
+DataVisualiser - Maps the data to a chart
 local_app - The local app
 remote_app - The remote app
+
+## Data
 
 The original app.py always loaded the login screen and local mode was launched through a button there, to completemly decouple the modes
 the local, remote, and testing modes now launch through argparse. This means that local mode can be launched when no database exists as the previous login screen imported and depended on pymongo.
@@ -74,3 +75,21 @@ simple user class in the model folder, holds a user_id and a username, as well a
 ## User repository
 
 Made a user repository class responsible for accessing the users collection. This class contains the login and save methods that used to belong to user, now called login and register. This class also creates an instance of database manager in its constructor so it can use its save and find by id methods. Progress is much faster at this point as I have decided to forego making unit tests alongside development, as well as the work from my original attempt being more usable. 
+
+## Login view
+
+At this point I wanted to start making the login controller that will access the user repository. I decided to make the login_view first as the buttons and fields on the form will determine the event readers in the controller. This only required some minor adjustments to the login_view I had previously created. 
+
+It seems like the best way to go forward would be to create all the views first as close as possible to the ones im my designs, FreeSimpleGUI does not make this easy but I will at least ensure they have all the buttons and fields from my designs. Making the views first will also allow me to easily see all the events I need handlers for in the various controllers.
+
+The login view also has a button that opens the register window, the logic behind this window also lives in the LoginController class, This logic needed to be updated slightly to add some input validation, for now it will only check that all fields are filled out and that the password matches the repeat password. This is the login part of the application finished for now, it will only exist when launching the remote app. I decided to do this part first as it was the closest to being what I had already made in class sessions.
+
+A small problem I had with the login controller logic holding the logic for the register view too was forgetting to have the register happen within a run loop. I just had the buttons as if statements within the "register" event so if creating a user failed the first time, e.g. 'username in use' the form would then become unusable. To fix this I added a similar loop to the logins 'while user is None' that uses instead 'while new_user is none" this ensure the window keeps reading inputs until its closed or a user is successfuly created.
+
+## Local view, Local controller
+
+While making the local view I realised that it would make sense to make the view and the controller alongside each other. My local view was kept the same as the design, just asking the user to select a file, the x and y axis labels, and the series key. I used an event on file selection to update the series key dropdown with the column list from the chosen file. This was done by creating a DataSource object upon file selection and using its columns() method I had made previously.
+
+
+
+

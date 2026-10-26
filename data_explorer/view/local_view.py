@@ -7,7 +7,7 @@ class LocalView:
         sg.theme("LightBlue3")
         
         self.layout = [
-            [sg.Push(), sg.Text('Select CSV File: ', font='Any 14', pad=(0, 20)), sg.FileBrowse(button_text='Browse', file_types=(("CSV Files", "*.csv"))), sg.Push()],
+            [sg.Push(), sg.Text("Choose a CSV:"), sg.Input(key="-FILE-", enable_events=True), sg.FileBrowse(button_text='Browse', file_types=(('CSV Files', '*.csv'),)), sg.Push()],
             [sg.Push(), sg.Text('Chart Title: ', font='Any 14', pad=(0, 20)), sg.Input(size=(40, 5), key='-TITLE-'), sg.Push()],
             [sg.Push(), sg.Text('x-axis Label: ', font='Any 14', pad=(0, 20)), sg.Input(size=(40, 5), key='-X_AXIS-'), sg.Push()],
             [sg.Push(), sg.Text('y-axis Label: ', font='Any 14', pad=(0, 20)), sg.Input(size=(40, 5), key='-Y_AXIS-'), sg.Push()],

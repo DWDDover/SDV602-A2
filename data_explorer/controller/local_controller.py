@@ -21,6 +21,6 @@ class LocalController:
                 selected_file_path = values["-FILE-"]
                 ds = DataSource(file_manager.read_csv(selected_file_path))
                 print((ds))
-                local_view['SERIES-KEY'].update(values=(ds.columns()))
+                local_view.window["-SERIES_KEY-"].update(values=(ds.columns()))
                 
                 
