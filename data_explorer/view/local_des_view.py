@@ -1,0 +1,23 @@
+import FreeSimpleGUI as sg
+
+
+class LocalDESView:
+
+    def __init__(self, chart_data):
+        sg.theme("LightBlue3")
+        
+        self.layout = [
+            [],
+            [],
+        ]
+        
+        self.window = sg.Window("Local Mode", self.layout, size=(900, 430), finalize=True)
+        
+    def close(self):
+        self.window.close()
+        
+    def show_error(self, message):
+        sg.popup_error(message)
+
+    def show_message(self, message):
+        sg.popup(message)
