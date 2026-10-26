@@ -88,7 +88,7 @@ A small problem I had with the login controller logic holding the logic for the 
 
 ## Local view, Local controller
 
-While making the local view I realised that it would make sense to make the view and the controller alongside each other. My local view was kept the same as the design, just asking the user to select a file, the x and y axis labels, and the series key. I used an event on file selection to update the series key dropdown with the column list from the chosen file. This was done by creating a DataSource object upon file selection and using its columns() method I had made previously.
+While making the local view I realised that it would make sense to make the view and the controller alongside each other. My local view was kept the same as the design, just asking the user to select a file, the x and y axis labels, and the series key. I used an event on file selection to update the series key dropdown with the column list from the chosen file. This was done by creating a DataSource object upon file selection and using its columns() method I had made previously. 
 
 
 
