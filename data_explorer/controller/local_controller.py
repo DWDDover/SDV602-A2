@@ -1,4 +1,4 @@
-from threading import Thread
+from processing import Process
 from ..exceptions import DataExplorerException
 import FreeSimpleGUI as sg
 
@@ -20,6 +20,8 @@ class LocalController:
             event, values = local_view.window.read()
 
             if event == sg.WIN_CLOSED:
+                for process in active_des:
+                    process.terminate()
                 local_view.close()
                 break
             
@@ -63,9 +65,9 @@ class LocalController:
                     continue
                 
                 dc = DESController(chart_data, LocalDESView)
-                thread = Thread(target=dc.run)
-                thread.start()
-                active_des.append(thread)
+                process = Process(target=dc.run)
+                process.start()
+                active_des.append(process)
 
                 
                 
