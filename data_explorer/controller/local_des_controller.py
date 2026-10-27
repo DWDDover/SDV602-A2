@@ -29,16 +29,31 @@ class LocalDESController:
                     continue
                 
                 self.view.window["-SERIES_KEY-"].update(values=(self.data_source.columns()))
+                self.view.window["-X-KEY-"].update(values=(self.data_source.columns()))
+                self.view.window["-Y-KEY-"].update(values=(self.data_source.columns()))
                 self.series_key = values["-SERIES_KEY-"]
                 
-            if event == 'Generate DES':
+            if event == 'Generate new DES':
                 if self.data_source is None:
                     self.view.show_error("Please select a CSV file first.")
                     continue
-                
-                dv = DataVisualiser(self.data_source, self.chart_data.x_key, self.chart_data.y_key, self.series_key)
+
+                self.series_key = values["-SERIES_KEY-"]
+                dv = DataVisualiser(
+                    self.data_source,
+                    values["-X-KEY-"],
+                    values["-Y-KEY-"],
+                    self.series_key
+                )
+
                 try:
-                    self.chart_data = dv.create_chart_data(self.chart_data.title, self.chart_data.x_key, self.chart_data.y_key, self.series_key)
+                    self.chart_data = dv.create_chart_data(
+                        self.chart_data.title,
+                        values["-X-KEY-"],
+                        values["-Y-KEY-"],
+                        self.series_key
+                    )
+                    self.view.draw_chart(self.chart_data)
                 except Exception as e:
                     self.view.show_error(f"Error updating chart data: {str(e)}")
                     continue
@@ -63,6 +78,7 @@ class LocalDESController:
                 except Exception as e:
                     self.view.show_error(f"Error updating chart data: {str(e)}")
                     continue
+                self.view.draw_chart(self.chart_data)
             
             if event == sg.WINDOW_CLOSED or event == 'Exit':
                 self.view.close()
