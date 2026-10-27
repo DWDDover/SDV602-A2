@@ -3,7 +3,7 @@ from ..exceptions import DataExplorerException
 import FreeSimpleGUI as sg
 
 from data_explorer.controller.data_visualiser import DataVisualiser
-from data_explorer.controller.des_controller import DESController
+from data_explorer.controller.local_des_controller import LocalDESController
 from data_explorer.data.file_manager import FileManager
 from data_explorer.view.local_view import LocalView
 from data_explorer.view.local_des_view import LocalDESView
@@ -69,7 +69,7 @@ class LocalController:
                     local_view.show_error(str(e))
                     continue
                 
-                dc = DESController(chart_data, LocalDESView)
+                dc = LocalDESController(chart_data, LocalDESView, ds, series_key)
                 process = Process(target=dc.run)
                 process.start()
                 active_des.append(process)

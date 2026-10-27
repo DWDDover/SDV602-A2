@@ -9,8 +9,14 @@ class LocalDESView:
         self.layout = [
             [sg.Push(), sg.Text(f"{chart_data.title}"), sg.Push()],
             [sg.Canvas()],
-            [sg.Button('Change data source', pad=20, size=(15, 2))],
-            [sg.Button('Append to data source', pad=20, size=(15, 2))],
+            [
+                sg.Input(key="-REPLACE-FILE-", enable_events=True),
+                sg.FileBrowse(button_text='Change data source', file_types=(('CSV Files', '*.csv'),)),
+                sg.Text('Series Key: ', font='Any 14', pad=(0, 20)),
+                sg.OptionMenu(values=['Select a new series key'], size=(40, 5), key='-SERIES_KEY-'),
+                sg.Button('Generate DES', pad=20, size=(15, 2)),
+            ],
+            [sg.Input(key="-APPEND-FILE-", enable_events=True), sg.FileBrowse(button_text='Append from file', file_types=(('CSV Files', '*.csv'),))]
         ]
         
         self.window = sg.Window("Local DES", self.layout, size=(900, 430), finalize=True)
