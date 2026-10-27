@@ -28,9 +28,8 @@ class LocalDESController:
                     self.view.show_error(f"Error changing data source: {str(e)}")
                     continue
                 
-                self.view.window["-SERIES_KEY-"].update(values=(self.data_source.columns()))
-                self.view.window["-X-KEY-"].update(values=(self.data_source.columns()))
-                self.view.window["-Y-KEY-"].update(values=(self.data_source.columns()))
+                self.view.update_dropdowns(self.data_source.columns())
+                
                 self.series_key = values["-SERIES_KEY-"]
                 
             if event == 'Generate new DES':

@@ -53,6 +53,11 @@ class LocalDESView:
         
         self.draw_chart(chart_data)
 
+    def update_dropdowns(self, columns):
+        self.window["-SERIES_KEY-"].update(values=(columns))
+        self.window["-X-KEY-"].update(values=(columns))
+        self.window["-Y-KEY-"].update(values=(columns))
+
     def draw_chart(self, chart_data):
         self.axes.clear()
 
