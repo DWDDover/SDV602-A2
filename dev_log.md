@@ -90,12 +90,20 @@ A small problem I had with the login controller logic holding the logic for the 
 
 While making the local view I realised that it would make sense to make the view and the controller alongside each other. My local view was kept the same as the design, just asking the user to select a file, the x and y axis labels, and the series key. I used an event on file selection to update the series key dropdown with the column list from the chosen file. This was done by creating a DataSource object upon file selection and using its columns() method I had made previously.
 
-An issue I encountered here during testing was selecting a non numeric x axis to pass into the data visualiser. I created a new exception to handle this error that could be passed up to the local window and display the error to the user. This error will be caught when creating chart data and returns the non numeric value. While doing this i also wrapped the other parts of local_controller in their own try excepts, such as for when the file cant be read as a csv, or no selection was made in one of the dropwdowns. I also added new exceptions in data visualiser to check that the x key, y key, and series key are all actually columns in the give3n data.
+An issue I encountered here during testing was selecting a non numeric x axis to pass into the data visualiser. I created a new exception to handle this error that could be passed up to the local window and display the error to the user. This error will be caught when creating chart data and returns the non numeric value. While doing this i also wrapped the other parts of local_controller in their own try excepts, such as for when the file cant be read as a csv, or no selection was made in one of the dropwdowns. I also added new exceptions in data visualiser to check that the x key, y key, and series key are all actually columns in the given data.
 
 ## Local DES view, DES controller
 
 Previously I was passing a local des view into des controller from local controller and passing that view the chart data I had created, I realised this wouldnt work for headless testing as I couldnt create that view without making a window. In order to fix this and also ensure DES controllers run method works with either a local or remote DES view the des controller is now passed both the chart data and a factory contsructor for the type of view. The run method then creates the window based on the type of view its given and the chart data, this also means that the same run method in DES controller will work with both local and remote views using an if statement.
 
-In order to append new data, the local controller now passes both the chart data, and the datasource used to make it. Because of this the DES controller can use the append method to append a new CSV file and then use the data visualiser to replace its chart data with that of the appended file. I decided to pass in both instead of just the data source so that the local controller can catch any errors in the users inputted attributes before making the DES window.
+In order to append new data, the local controller now passes both the chart data, and the datasource used to make it. Because of this the DES controller can use the append method to append a new CSV file and then use the data visualiser to replace its chart data with that of the appended file. I decided to pass in both instead of just the data source so that the local controller can catch any errors in the users inputted attributes before making the DES window. I also changed data source to hold a chart title that will be used within the DES window.
 
 I used a canvas in the window in order to draw the chart, and the defualt matplotlib toolbar. An issue I'm having is the x axis values being sorted alphabetically on the chart, meaning each age is sorted seperately and not in order.
+
+I decided this is not actually an issue and its fine to plot the data this way. I moved the updating of the dropdown list values into a method within local DES view that the controller calls rather than having the controller manipulate the window diretctly. This means that headless testing will work better for this controller.
+
+I decided to reverse the change made earlier which had a single DES controller for the local and remote modes. there is now a local DES controller and a remote DES controler. This is because the remote controller will need extra values passed into it in order to work.
+
+## Remote mode
+
+

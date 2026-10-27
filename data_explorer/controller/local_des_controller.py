@@ -30,19 +30,18 @@ class LocalDESController:
                 
                 self.view.update_dropdowns(self.data_source.columns())
                 
-                self.series_key = values["-SERIES_KEY-"]
                 
             if event == 'Generate new DES':
                 if self.data_source is None:
                     self.view.show_error("Please select a CSV file first.")
                     continue
 
-                self.series_key = values["-SERIES_KEY-"]
+                # self.series_key = values["-SERIES_KEY-"]
                 dv = DataVisualiser(
                     self.data_source,
                     values["-X-KEY-"],
                     values["-Y-KEY-"],
-                    self.series_key
+                    values["-SERIES_KEY-"]
                 )
 
                 try:
@@ -70,6 +69,7 @@ class LocalDESController:
                     self.view.show_message("Data appended successfully.")
                 except Exception as e:
                     self.view.show_error(f"Error appending data: {str(e)}")
+                    continue
                     
                 dv = DataVisualiser(self.data_source, self.chart_data.x_key, self.chart_data.y_key, self.series_key)
                 try:
