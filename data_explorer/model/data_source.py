@@ -64,4 +64,3 @@ class DataSource:
             raise IncompatibleDataSourceError("New data is not compatible with existing data")
         
         self.data.extend(new_data)
-            
