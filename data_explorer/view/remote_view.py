@@ -7,13 +7,14 @@ class RemoteView:
         sg.theme("DarkRed1")
         
         session_box = [
-            [sg.Listbox(values=[], size=(30, 12), key='-SESSION_LIST-')],
-            [sg.Button('Join Session', pad=20, size=(15, 2), key='-JOIN_SESSION-', bind_return_key=True)],
+            [sg.Listbox(values=[], size=(30, 10), key='-SESSION_LIST-')],
+            [sg.Button('Join Session', pad=5, size=(15, 2), key='-JOIN_SESSION-'), sg.Button('Refresh', pad=5, size=(15, 2), key='-REFRESH_SESSIONS-')],
+            [sg.Button('Delete Session', pad=5, size=(15, 2), key='-DELETE_SESSION-')]
         ]
         create_session_box = [
             [sg.Text('Session name:'), sg.Input(size=(20, 1), key='-SESSION_NAME-')],
             [sg.Checkbox('Private', key='-PRIVATE-', default=False)],
-            [sg.Button('Create Session', pad=20, size=(15, 2), key='-CREATE_SESSION-', bind_return_key=True)],
+            [sg.Button('Create Session', pad=20, size=(15, 2), key='-CREATE_SESSION-')],
         ]
 
         self.layout = [
@@ -24,7 +25,7 @@ class RemoteView:
             [sg.Push(),sg.Text('Data name:'), sg.Input(size=(40, 5), key='-DATA-NAME-'), sg.Button('Upload'), sg.Push(),],
         ]
         
-        self.window = sg.Window("Remote Mode", self.layout, size=(700, 430), finalize=True)
+        self.window = sg.Window("Remote Mode", self.layout, size=(700, 500), finalize=True)
         
     def close(self):
         self.window.close()

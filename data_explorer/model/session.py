@@ -6,3 +6,6 @@ class Session:
         self.private = private
         self.data_source_id = data_source_id
         self.session_id = session_id
+        
+    def __str__(self):
+        return self.name if self.name else "Unnamed Session"
