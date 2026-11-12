@@ -12,6 +12,7 @@ class RemoteView:
         ]
         
         self.layout = [
+            [sg.Push(), sg.Text("Logged in as: "), sg.Text("", key='-USERNAME-', size=(20, 1)), sg.Button('Logout', size=(10, 1)), sg.Push()],
             [sg.Frame('Join a session', session_box)],
             [sg.Text("upload a CSV:"), sg.Input(key="-FILE-", enable_events=True), sg.FileBrowse(button_text='Browse', file_types=(('CSV Files', '*.csv'),))],
             [sg.Text('Data name:'), sg.Input(size=(40, 5), key='-NAME-'), sg.Button('Upload')],

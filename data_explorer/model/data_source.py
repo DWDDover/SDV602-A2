@@ -6,8 +6,10 @@ class DataSource:
         """ Initialise a new data source instance
         
         Parameters:
-        name (str): the name of the data source
-        data (list of dicts): the data held by the data source """
+
+        data (list of dicts): the data held by the data source 
+        name (str): the name of the data source - for remote modes source pickr
+        data_source_id (str): the unique identifier for the data source - for remote mode"""
         
         if data is None:
             self.data = []
