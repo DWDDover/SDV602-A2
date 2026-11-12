@@ -104,6 +104,39 @@ I decided this is not actually an issue and its fine to plot the data this way. 
 
 I decided to reverse the change made earlier which had a single DES controller for the local and remote modes. there is now a local DES controller and a remote DES controler. This is because the remote controller will need extra values passed into it in order to work.
 
+This completes the local mode of the application
+
 ## Remote mode
 
+To start the remote mode i made the two missing models, session and chat message. session will hold the session name, user id of the host, a session id, and a list of the user ids of the users currently in the session. Message will hold a user id of the writer, the session ID of the session it weas written in, and the message content. The remote mode will use a repository module type as part of the MVC, the repositories will be as follows
 
+data_source_repository
+message_repository
+session_repository
+user_repository
+
+
+The user repository consists of a class containing two methods, login and register. These methods were taken from the previously existing user model to seperate responsibility. Repository modules will import the database manager class and will be responsible for all database operations.
+
+These repositories will correspond to four collections in the database, 
+
+users
+    - user_id
+    - name
+    - password
+messages
+    - session_id
+    - creator_id
+    - content
+    - timestamp
+sessions
+    - host_id
+    - users
+    - data_source_id
+    - public
+    - timestamp
+data_sources
+    - data_source_id
+    - user_id
+    - data
+    - title

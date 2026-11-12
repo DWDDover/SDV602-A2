@@ -49,7 +49,7 @@ class LocalDESController:
                         self.chart_data.title,
                         values["-X-KEY-"],
                         values["-Y-KEY-"],
-                        self.series_key
+                        values["-SERIES_KEY-"]
                     )
                     self.view.draw_chart(self.chart_data)
                 except Exception as e:
