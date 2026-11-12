@@ -147,6 +147,12 @@ Also at this point I added a delete_one_by_id and update_one_by_id to database m
 
 I decide to go back and remove the user list from the session model as it won't be used anywhere else and creates some issues with saving and updating session data. I also misunderstood private in terms of a remote session. I will make it so private sessions only have the host in them. I couldn't work out how to have the session removed from the database upon the process for that session terminating. 
 
-I changed chat messages model to include a username instead of a user ID. This is because the only purpose of the user ID was to find the username to display later in the remote des window. I also added a delete session messages later that will be used alongside deleleting a session in the remote des controller. This uses pymongos delete_many function.
+I changed chat messages model to include a username instead of a user ID. This is because the only purpose of the user ID was to find the username to display later in the remote des window. I also added a delete session messages later that will be used alongside deleleting a session in the remote des controller. This uses pymongos delete_many function. I also added a message ID in order to make the polling more efficient as pymognos ID system increases the IDs over time. Using this i will sort the message list returned by each message_id. To fix the polling i added an extra parameter to get messages by session for the last_message_id, this also required using mongos $gt operator as a second query on the find to only return greater IDs. This also reqwuired importing bson into the message repository to convert the string 'last_message_id" back into and object ID for comparison.
+
+The final data module to make is data source repository
+
+An issue encountered immediately is that the current datasource object does not have a name attribute. This will be required when uses are selecting from their uploaded datasource so this extra paramater was added to the constructor with a default =None as the local mode will not use it. The data source collection will include a user ID but it wont be present in thje data source object, this is becuase local mode does not require it and the only time it will be used is to show a user a list of their own uplodaded sources to pick from. This list also requires that the DataSource object also has an optional ID parameter so that the list picker has something the controller can find the correct source from. This method returns DataSource objects with no data so the picker can display the name and the controller can retrieve the datasource_id
+
+
 
 

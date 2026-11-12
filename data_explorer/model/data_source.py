@@ -2,7 +2,7 @@ from ..exceptions import IncompatibleDataSourceError
 
 class DataSource:
     """A class used to represent a data source."""
-    def __init__(self, data=None):
+    def __init__(self, data=None, name=None, data_source_id=None):
         """ Initialise a new data source instance
         
         Parameters:
@@ -13,7 +13,10 @@ class DataSource:
             self.data = []
         else:
             self.data = data
-        
+
+        self.name = name
+        self.data_source_id = data_source_id
+
     def columns(self):
         """Return the column names from the data
 
@@ -64,3 +67,8 @@ class DataSource:
             raise IncompatibleDataSourceError("New data is not compatible with existing data")
         
         self.data.extend(new_data)
+        
+        
+    ## for use in the user source list
+    def __str__(self):
+        return self.name if self.name else "Unnamed Data Source"
