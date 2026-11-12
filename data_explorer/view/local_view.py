@@ -25,6 +25,18 @@ class LocalView:
     def close(self):
         self.window.close()
         
+    def update_dropdowns(self, columns):
+        self.window["-X-AXIS-"].update(values=columns, value='Select an x-axis')
+        self.window["-Y-AXIS-"].update(values=columns, value='Select a y-axis')
+        self.window["-SERIES_KEY-"].update(values=columns, value='Select a series key')
+
+    def clear_fields(self):
+        self.window["-FILE-"].update("")
+        self.window["-TITLE-"].update("")
+        self.window["-X-AXIS-"].update(values=['Select an x-axis'], value='Select an x-axis')
+        self.window["-Y-AXIS-"].update(values=['Select a y-axis'], value='Select a y-axis')
+        self.window["-SERIES_KEY-"].update(values=['Select a series key'], value='Select a series key')
+        
     def show_error(self, message):
         sg.popup_error(message)
 

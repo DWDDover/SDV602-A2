@@ -3,7 +3,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from matplotlib.figure import Figure
 
 
-class LocalDESView:
+
+class RemoteDESView:
 
     def __init__(self, chart_data):
         sg.theme("LightBlue3")

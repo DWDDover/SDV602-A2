@@ -177,7 +177,17 @@ Upload CSV - upload the selected CSV to the database with the name given by the 
 
 Starting with the bones of the local controller, the remote controller needs to fucntion slightly differently when opening a DES window in a new process. The process needs to know the current user and the current session when it is opened. After refactoring my local controller I realised it reads values directly from the window for its event which will not allow for headless testing. I will now go back and refactor the controller to have a method for each event that is either called through GUI interaction, in which case its paramaters come from window values, or can be called with values i give them in headless testing.
 
+## Decoupling refactor
 
+The first refactor is to pass the file manager and local_view into the initial creation of the local controller in local_app.py. This means when a local controller is created later in testing a real local view does not have to be creaetd in order to run local_cojntroller. the local controllers constructor now takes these two objects rather than creating them itself.
+
+The next part of the refactor is to split each event read logic into a function that can be decoupled from the UI and called outside of a window event for testing. The data_source is now also a parameter in local controllers _init_. This wont affect functionalility but means headless mode can pass in a data source manually. A new method called file chosen was created in local controller, this handles updating the sotred data source for the main local window. As it currently exists the controller reaches into the local view to update the columns for the dropdowns, thjis method will be moved into the local view. The generate DES event still reads values directly from the window so will be decoupled in a similar way.
+
+The local controller now has a method to generate the chart data and to start a new DES process. The actual generate DES event is now the only place the window is read as this logic can only be called through interacting with the GUI. The two new processes can be called in headless testing without a GUI window.
+
+LocalDESController now needs similar refactoring, each event behaviour will be replaced with a method that takes the values that are read from the window, allowing each method to be called in the headless testing. The append, replace, and generate new DES logic was moved into three new methods which take the values they need. The actual events that call the new methods read the values from the window, meaning in my tests these methods can be tested without reliance on the GUI
+
+With these refactors in mind the remote mode equivalents of the controllers will be created with decoupling in mind from the start.
 
 
 
