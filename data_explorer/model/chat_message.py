@@ -1,9 +1,10 @@
-from datetime import datetime
-
 class ChatMessage:
     
-    def __init__(self, user_id, session_id, content):
-        self.user_id = user_id
+    def __init__(self, username, session_id, content, timestamp):
+        self.username = username
         self.session_id = session_id
         self.content = content
-        self.timestamp = datetime.now()
+        self.timestamp = timestamp
+        
+    def __repr__(self):
+        return f"{self.username}: {self.content} ({self.timestamp})"

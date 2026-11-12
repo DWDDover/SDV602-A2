@@ -140,3 +140,13 @@ data_sources
     - user_id
     - data
     - title
+
+I started with the session model and repository. I used the fields name, host_id, private, users, data_source_id=None, and session_id in the constructor. I decided to use a data_source_id as reference to the other collection to prevent storing large data files in the session collection that are repeated in the data_source collection. The session repository will follow the pattern of the users repository but with quite a few more methods. The first was create_session that creates a new session object by taking the attributes as parameters, creates a new document using the sessions attributes, and returns the session object. Returning the session object will prevent an extra step later where a user makes a session, a session window opens, and all the session info has to be retrieved from the database. The session repostory has a get session by id that uses the database managers get one by id and then creates a session object. I realised at this point that all the methods were going to repeat the code where the values from the document were passed into a constructor to create a new session object so I created a helper function that takes the document as session_data and returns a session object. This will be used in any method that is retrieving a session from the database.
+
+Also at this point I added a delete_one_by_id and update_one_by_id to database manager as these were not made previosly and not required by the user repository.
+
+I decide to go back and remove the user list from the session model as it won't be used anywhere else and creates some issues with saving and updating session data. I also misunderstood private in terms of a remote session. I will make it so private sessions only have the host in them. I couldn't work out how to have the session removed from the database upon the process for that session terminating. 
+
+I changed chat messages model to include a username instead of a user ID. This is because the only purpose of the user ID was to find the username to display later in the remote des window. I also added a delete session messages later that will be used alongside deleleting a session in the remote des controller. This uses pymongos delete_many function.
+
+
