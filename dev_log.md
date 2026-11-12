@@ -157,6 +157,26 @@ This finishes the data modules for remote mode
 
 ## Remote View - Main form
 
+The remote view main form has three areas, the join session list, which doubles as the manage sessions allowing hosts to delte their own sessions, the create session frame, where the user can choose a name, and whether the session is private, and create a session. It also has an upload data source area, in which users can select a file on their local machine and upload it to the database with a new name.
+
+## Remote controller
+
+The remote controller needs to wire up the componenets of the remote view with different behaviiours for each event. These will be:
+
+Create - make a new session object and add it to the database, while also opening the window for that session for the user that created it
+
+Delete - delete the session that is selected if it is hosted by the current user
+
+Join - open the window for the selected session
+
+Refresh - repopulate the session list with current sessions
+
+Logout - return the user to the login screen
+
+Upload CSV - upload the selected CSV to the database with the name given by the user
+
+Starting with the bones of the local controller, the remote controller needs to fucntion slightly differently when opening a DES window in a new process. The process needs to know the current user and the current session when it is opened. After refactoring my local controller I realised it reads values directly from the window for its event which will not allow for headless testing. I will now go back and refactor the controller to have a method for each event that is either called through GUI interaction, in which case its paramaters come from window values, or can be called with values i give them in headless testing.
+
 
 
 
