@@ -225,7 +225,19 @@ The append method within the remote session lets the user pick from one of their
 
 ## Chat function
 
-Remote DES controller will store the ID of the last message seen on self. This will be used when retrieving messages as the current function retrieves all messages after the given ID. For joining a lobby, all messages will be newer than the starting value of None and the chat history for that lobby will be shown. The visual time on messages str representation has been trimmed to just a time. 
+Remote DES controller will store the ID of the last message seen on self. This will be used when retrieving messages as the current function retrieves all messages after the given ID. For joining a lobby, all messages will be newer than the starting value of None and the chat history for that lobby will be shown. The visual time on messages str representation has been trimmed to just a time. Messages are owned by a session. I decided not to remove messages from the database after a session is deleted.
+
+## Testing
+
+The testing will be split into sections as follow, when thee app is ran in testing mode each section will carry out all their tests
+
+Local Mode
+
+Login
+
+Remote Mode
+
+### Local Mode
 
 
 
