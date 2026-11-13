@@ -201,7 +201,27 @@ upload_data - Uploads the selected file to the database with the users id to ide
 
 Each method is used inside the run loops relevant event, which takes values from the window to pass into the method, this ensures the methods can be ran with defined values in the headless testing.
 
+I also added a refresh sessions method to the view which takes the sesison list as an argument and a refresh sessions methjod to the controller that passes in the sessions and calls this method. The logout mehotd had to be changed to import the login controller within the function after closing the remote window to prevent a circular import.
 
+An issue now preventing progress is that the sessions in the list are strings and need a way to target the actual sessions the represent. 
+
+The issue turned out to be that reading a list boxes values returned a list of selected values instead of the single session. To fix this i targeted only the first session in the list of selected sessions. 
+
+To address the session closing issue the remoteDEScontroller has a timeout of 2 seconds that checks if its own session is still in the database, if its not the users will be notified and the session closed. This same polling will check for changes to the session made by the host, such as replacing or appending the data
+
+## Remote Des Controller/View
+
+The remote DES view uses the template of the local DES view with some changes. The chat window is added on the right, the chart title is replaced with the session name, the upload and replace sections now use a dropdown of data sources the user has uploaded, and a section to upload new data was added. The session window has a 2 second poll rate that will be used to show any changes made, such as new data, appended data, or new chat messages.
+
+Another issue and workaround I had was updating the sessions current datasource. I was trying the retrieve the data from the combobox but relaised i set it eralier so that the list of a users data sources generated only held hte name and ID. I used this to make the method jsut update the data source for the session in the session collection. The ID is then used again to update the actual data for the session. The windows polling will update this for all users in the session too.
+
+A concession I will make with the data is that each user will set their own x-key, y-key, and series key rather than these being defined session wide.
+
+Rather than updating the sessions data source every 2 seconds the polling will check if the ID has changed and only update if necessary. The old check to see if the host had delted the session is now within this same check. The data source being changed by the user brings back the empty placeholder charts and each user will have to select new x and y valeus. 
+
+I reused the upload method so it functions the same as the one in the main remote form.
+
+The append method within the remote session lets the user pick from one of their uploaded files and append it to the sessions current data source. data sources extend method handles the compatibility checks. The new extended data is then made the sessions current data source for all users.
 
 
 

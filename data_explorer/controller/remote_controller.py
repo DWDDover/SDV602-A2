@@ -3,8 +3,8 @@ from data_explorer.view.remote_des_view import RemoteDESView
 from data_explorer.data.session_repository import SessionRepository
 from data_explorer.data.data_source_repository import DataSourceRepository
 from data_explorer.controller.remote_des_controller import RemoteDESController
+from data_explorer.exceptions import DataExplorerException
 from multiprocessing import Process
-from ..exceptions import DataExplorerException
 import FreeSimpleGUI as sg
 
 class RemoteController:
@@ -21,7 +21,8 @@ class RemoteController:
         try:
             session = self.session_repository.create_session(session_name, user_id, private)
         except DataExplorerException as e:
-            raise e
+            self.remote_view.show_error(str(e))
+            return
         dc = RemoteDESController(session, self.user, RemoteDESView)
         process = Process(target=dc.run)
         process.start()
@@ -31,9 +32,10 @@ class RemoteController:
         try:
             session = self.session_repository.get_session_by_id(session_id)
             if session is None:
-                raise DataExplorerException("Session not found.")
+                self.remote_view.show_error(DataExplorerException("Session not found."))
         except DataExplorerException as e:
-            raise e
+            self.remote_view.show_error(str(e))
+            return
         dc = RemoteDESController(session, self.user, RemoteDESView)
         process = Process(target=dc.run)
         process.start()
@@ -45,10 +47,15 @@ class RemoteController:
             process.terminate()
         self.active_sessions.clear()
         self.remote_view.close()
+        ##import of login controller here to avoid circular import
+        from data_explorer.controller.login_controller import LoginController
+        lc = LoginController()
+        lc.run()
         
     def delete_session(self, session):
         if session.host_id != self.user.user_id:
-            self.remote_view.show_error(DataExplorerException("You do not have permission to delete this session."))
+            self.remote_view.show_error("You do not have permission to delete this session.")
+            return
         try:
             self.session_repository.delete_session(session.session_id)
             self.refresh_sessions()
@@ -62,12 +69,17 @@ class RemoteController:
             self.remote_view.show_message("Data uploaded successfully.")
         except DataExplorerException as e:
             self.remote_view.show_error(str(e))
+            
+    def refresh_sessions(self):
+        sessions = self.session_repository.list_public_sessions()
+        self.remote_view.refresh_sessions(sessions)
 
 
     def run(self):
         remote_view = self.remote_view
         
         remote_view.window['-USERNAME-'].update(self.user.username)
+        self.refresh_sessions()
         
         while True:
             event, values = remote_view.window.read()
@@ -85,26 +97,27 @@ class RemoteController:
                 self.create_session(session_name, self.user.user_id, private)
                 
             if event == '-JOIN_SESSION-':
-                session = values['-SESSION_LIST-']
-                if not session:
+                selected_sessions = values['-SESSION_LIST-']
+                if not selected_sessions:
                     remote_view.show_error("Please select a session to join.")
                     continue
+                session = selected_sessions[0]
                 session_id = session.session_id
                 self.join_session(session_id)
 
 
             if event == '-REFRESH_SESSIONS-':
                 try:
-                    sessions = self.session_repository.list_public_sessions()
-                    remote_view.window['-SESSION_LIST-'].update(sessions)
+                    self.refresh_sessions()
                 except DataExplorerException as e:
                     remote_view.show_error(str(e))
                     
             if event == '-DELETE_SESSION-':
-                session = values['-SESSION_LIST-']
-                if not session:
+                selected_sessions = values['-SESSION_LIST-']
+                if not selected_sessions:
                     remote_view.show_error("Please select a session to delete.")
                     continue
+                session = selected_sessions[0]
                 self.delete_session(session)
                 
             if event == '-UPLOAD_DATA-':

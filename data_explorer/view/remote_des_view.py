@@ -18,7 +18,7 @@ class RemoteDESView:
             [
                 sg.Text('Data name:'), 
                 sg.Input(size=(40, 5), key='-DATA-NAME-'), 
-                sg.Button('Upload'), 
+                sg.Button('Upload', key='-UPLOAD-FILE-'), 
             ],
             [
                 sg.Text('Append data:'),
@@ -27,7 +27,7 @@ class RemoteDESView:
                 sg.Combo(values=['Select data to append'], size=(40, 5), key='-APPEND-FILE-')
             ],
             [
-                sg.Button('Append Data', pad=20, size=(15, 2)),
+                sg.Button('Append Data', pad=20, size=(15, 2), key='-APPEND-DATA-'),
             ]
         ]
         
@@ -49,7 +49,7 @@ class RemoteDESView:
                 sg.Text('y-axis:'),
                 sg.OptionMenu(values=['Select a new y-axis value'], size=(40, 5), key='-Y-KEY-'),
             ],
-            [sg.Button('Replace DES', pad=20, size=(15, 2)),],
+            [sg.Button('Generate Chart', pad=20, size=(15, 2), key='-GENERATE-CHART-')],
         ]
         
         chat_box = [
@@ -87,6 +87,10 @@ class RemoteDESView:
         self.window["-SERIES_KEY-"].update(values=(columns))
         self.window["-X-KEY-"].update(values=(columns))
         self.window["-Y-KEY-"].update(values=(columns))
+        
+    def update_combos(self, user_sources):
+        self.window["-REPLACE-FILE-"].update(values=user_sources)
+        self.window["-APPEND-FILE-"].update(values=user_sources)
 
     def draw_chart(self, chart_data):
         

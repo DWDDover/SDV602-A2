@@ -18,7 +18,7 @@ class RemoteView:
         ]
 
         self.layout = [
-            [sg.Push(), sg.Text("Logged in as: "), sg.Text("", key='-USERNAME-', size=(20, 1)), sg.Button('Logout', size=(10, 1)), sg.Push()],
+            [sg.Push(), sg.Text("Logged in as: "), sg.Text("", key='-USERNAME-', size=(20, 1)), sg.Button('Logout', size=(10, 1), key='-LOGOUT-'), sg.Push()],
             [sg.Frame('Join a session', session_box, pad=(20, 15)), sg.Push(), sg.Frame('Create a session', create_session_box, pad=(20, 15))],
             [sg.VPush()],
             [sg.Push(),sg.Text("upload a CSV:"), sg.Input(key="-FILE-", enable_events=True), sg.FileBrowse(button_text='Browse', file_types=(('CSV Files', '*.csv'),)), sg.Push(),],
@@ -26,6 +26,9 @@ class RemoteView:
         ]
         
         self.window = sg.Window("Remote Mode", self.layout, size=(700, 500), finalize=True)
+        
+    def refresh_sessions(self, sessions):
+        self.window['-SESSION_LIST-'].update(sessions)  
         
     def close(self):
         self.window.close()
