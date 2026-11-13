@@ -8,4 +8,4 @@ class ChatMessage:
         self.message_id = message_id
         
     def __str__(self):
-        return f"{self.username}: {self.content} ({self.timestamp})"
+        return f"{self.username}: {self.content}    ({self.timestamp.strftime('%H:%M:%S')})\n"

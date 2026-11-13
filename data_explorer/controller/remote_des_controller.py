@@ -19,6 +19,7 @@ class RemoteDESController:
         self.session_repository = None
         self.message_repository = None
         self.file_manager = None
+        self.last_message_id = None
         
     def replace_data(self, data_source):
         data_source_id = data_source.data_source_id
@@ -29,6 +30,25 @@ class RemoteDESController:
                 self.data_source = data
                 self.session.data_source_id = data_source_id
                 self.view.update_dropdowns(self.data_source.columns())
+        except DataExplorerException as e:
+            self.view.show_error(str(e))
+        
+    def send_message(self, content):
+        try:
+            message = self.message_repository.create_message(self.user.username, self.session.session_id, content)
+            if message is None:
+                self.view.show_error("Cannot send empty message.")
+                return
+        except DataExplorerException as e:
+            self.view.show_error(str(e))
+            
+    def fetch_new_messages(self):
+        try:
+            messages = self.message_repository.get_messages_by_session(self.session.session_id, self.last_message_id)
+            if messages:
+                ##resets the last_message_id to the latest message
+                self.last_message_id = str(messages[-1].message_id)
+                self.view.show_new_messages(messages)
         except DataExplorerException as e:
             self.view.show_error(str(e))
         
@@ -88,11 +108,14 @@ class RemoteDESController:
         self.data_source = self.data_source_repository.get_data_source_by_id(self.session.data_source_id) if self.session.data_source_id else None
         if self.data_source:
             self.view.update_dropdowns(self.data_source.columns())
+        ##initial load of chat messages for the session
+        self.fetch_new_messages()
 
         while True:
             event, values = self.view.window.read(timeout=2000)
             
             if event == '__TIMEOUT__':
+                self.fetch_new_messages()
                 remote_session = self.session_repository.get_session_by_id(self.session.session_id)
                 if remote_session is None:
                     self.view.show_error("This session has been deleted by the host.")
@@ -140,5 +163,14 @@ class RemoteDESController:
                 if series_key == 'Select a new series key':
                     series_key = None
                 self.generate_chart(series_key, x_key, y_key)
+                
+            if event == '-SEND-CHAT-':
+                content = values['-CHAT-']
+                if not content.strip():
+                    self.view.show_error("Cannot send empty message.")
+                    continue
+                self.send_message(content)
+                self.view.window['-CHAT-'].update('')
+                self.fetch_new_messages()
             
             

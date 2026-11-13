@@ -56,7 +56,7 @@ class RemoteDESView:
             [sg.Multiline(size=(50, 20), disabled=True,
                           autoscroll=True, key='-OUTPUT-')],
             [sg.Input(size=(40, 5), key='-CHAT-', do_not_clear=True)],
-            [sg.Button('Send', bind_return_key=True)]
+            [sg.Button('Send', key='-SEND-CHAT-', bind_return_key=True)]
         ]
 
         self.layout = [
@@ -115,6 +115,13 @@ class RemoteDESView:
 
         self.figure.tight_layout()
         self.canvas.draw()
+        
+    def show_new_messages(self, messages):
+        output_elem = self.window['-OUTPUT-']
+        ##appends each message to the chat box and scrolls to the bottom
+        for message in messages:
+            output_elem.update(str(message), append=True)
+        output_elem.Widget.yview_moveto(1)
         
     def close(self):
         self.window.close()
