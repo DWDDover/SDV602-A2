@@ -223,6 +223,10 @@ I reused the upload method so it functions the same as the one in the main remot
 
 The append method within the remote session lets the user pick from one of their uploaded files and append it to the sessions current data source. data sources extend method handles the compatibility checks. The new extended data is then made the sessions current data source for all users.
 
+## Chat function
+
+
+
 
 
 

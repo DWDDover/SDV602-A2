@@ -33,6 +33,7 @@ class RemoteController:
             session = self.session_repository.get_session_by_id(session_id)
             if session is None:
                 self.remote_view.show_error(DataExplorerException("Session not found."))
+                return
         except DataExplorerException as e:
             self.remote_view.show_error(str(e))
             return
@@ -71,8 +72,11 @@ class RemoteController:
             self.remote_view.show_error(str(e))
             
     def refresh_sessions(self):
-        sessions = self.session_repository.list_public_sessions()
-        self.remote_view.refresh_sessions(sessions)
+        try:
+            sessions = self.session_repository.list_public_sessions()
+            self.remote_view.refresh_sessions(sessions)
+        except DataExplorerException as e:
+            self.remote_view.show_error(str(e))
 
 
     def run(self):

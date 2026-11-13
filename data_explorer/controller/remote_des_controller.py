@@ -4,6 +4,7 @@ from data_explorer.data.file_manager import FileManager
 from data_explorer.controller.data_visualiser import DataVisualiser
 from data_explorer.model.data_source import DataSource
 from data_explorer.data.session_repository import SessionRepository
+from data_explorer.data.message_repository import MessageRepository
 from data_explorer.exceptions import DataExplorerException
 
 class RemoteDESController:
@@ -16,6 +17,7 @@ class RemoteDESController:
         self.chart_data = chart_data
         self.data_source_repository = None
         self.session_repository = None
+        self.message_repository = None
         self.file_manager = None
         
     def replace_data(self, data_source):
@@ -80,6 +82,7 @@ class RemoteDESController:
     def run(self):
         self.data_source_repository = DataSourceRepository()
         self.session_repository = SessionRepository()
+        self.message_repository = MessageRepository()
         self.view = self.view_factory(self.chart_data, self.session.name)
         self.update_combos()
         self.data_source = self.data_source_repository.get_data_source_by_id(self.session.data_source_id) if self.session.data_source_id else None
