@@ -6,13 +6,35 @@ from matplotlib.figure import Figure
 
 class RemoteDESView:
 
-    def __init__(self, chart_data):
-        sg.theme("LightBlue3")
+    def __init__(self, chart_data, name="Remote Data Exploration Session"):
+        sg.theme("LightGreen9")
+        
+        upload_data_box = [
+            [
+                sg.Text("upload a CSV:"), 
+                sg.Input(key="-FILE-", enable_events=True), 
+                sg.FileBrowse(button_text='Browse', file_types=(('CSV Files', '*.csv'),)), 
+            ],
+            [
+                sg.Text('Data name:'), 
+                sg.Input(size=(40, 5), key='-DATA-NAME-'), 
+                sg.Button('Upload'), 
+            ],
+            [
+                sg.Text('Append data:'),
+            ],
+            [
+                sg.Combo(values=['Select data to append'], size=(40, 5), key='-APPEND-FILE-')
+            ],
+            [
+                sg.Button('Append Data', pad=20, size=(15, 2)),
+            ]
+        ]
         
         new_chart_box = [
             [
-                sg.Input(key="-REPLACE-FILE-", enable_events=True),
-                sg.FileBrowse(button_text='Browse', file_types=(('CSV Files', '*.csv'),))
+                sg.Text('Replace data:'),
+                sg.Combo(key="-REPLACE-FILE-", size=(40, 5), values=['Select a new CSV file'], enable_events=True),
             ],
             [sg.Text('New chart options:')],
             [
@@ -27,7 +49,7 @@ class RemoteDESView:
                 sg.Text('y-axis:'),
                 sg.OptionMenu(values=['Select a new y-axis value'], size=(40, 5), key='-Y-KEY-'),
             ],
-            [sg.Button('Generate new DES', pad=20, size=(15, 2)),],
+            [sg.Button('Replace DES', pad=20, size=(15, 2)),],
         ]
         
         chat_box = [
@@ -37,17 +59,16 @@ class RemoteDESView:
             [sg.Button('Send', bind_return_key=True)]
         ]
 
-        append_data_box = [
-            [sg.Input(key="-APPEND-FILE-", enable_events=True), sg.FileBrowse(button_text='Append from file', file_types=(('CSV Files', '*.csv'),))]
-        ]
-
         self.layout = [
-            [sg.Push(), sg.Text(f"{chart_data.title}"), sg.Push()],
-            [sg.Canvas(size=(640, 520), key='-CANVAS-'), sg.Frame('Replace data', new_chart_box), sg.Frame('Chat', chat_box)],
-            [sg.Frame('Extend data', append_data_box)]
+            [sg.Push(), sg.Text(f"{name}"), sg.Push()],
+            [sg.Canvas(size=(640, 520), key='-CANVAS-'), sg.Frame('Chat', chat_box)],
+            [
+                sg.Frame('Upload or append data', upload_data_box), 
+                sg.Frame('Replace data', new_chart_box),
+            ],
         ]
         
-        self.window = sg.Window(chart_data.title, self.layout, finalize=True)
+        self.window = sg.Window(name, self.layout, finalize=True)
         self.figure = Figure(figsize=(6.4, 4.2), dpi=100)
         self.axes = self.figure.add_subplot(111)
         
@@ -59,7 +80,8 @@ class RemoteDESView:
         self.toolbar.update()
         self.toolbar.pack(fill="x", expand=False)
         
-        self.draw_chart(chart_data)
+        if chart_data:  
+            self.draw_chart(chart_data)
 
     def update_dropdowns(self, columns):
         self.window["-SERIES_KEY-"].update(values=(columns))
@@ -67,6 +89,14 @@ class RemoteDESView:
         self.window["-Y-KEY-"].update(values=(columns))
 
     def draw_chart(self, chart_data):
+        
+        ##for intial session creation before data is chosen
+        if chart_data is None:
+            self.axes.clear()
+            self.axes.set_title("No data available")
+            self.canvas.draw()
+            return
+        
         self.axes.clear()
 
         for series_name, (x_values, y_values) in chart_data.series.items():

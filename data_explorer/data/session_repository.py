@@ -47,4 +47,7 @@ class SessionRepository:
     def delete_session(self, session_id):
         self.db_manager.delete_one_by_id("sessions", session_id)
         
+    def delete_sessions_by_host_id(self, host_id):
+        self.db_manager.get_collection("sessions").delete_many({"host_id": host_id})
+        
     

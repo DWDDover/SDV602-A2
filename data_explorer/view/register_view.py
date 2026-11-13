@@ -4,7 +4,7 @@ import FreeSimpleGUI as sg
 class RegisterView:
 
     def __init__(self):
-        sg.theme("DarkRed1")
+        sg.theme("LightGreen9")
 
         self.layout = [
             [sg.Push(), sg.Text('Username: ', font='Any 14'), sg.Input(size=(40, 5), key='-USERNAME-', do_not_clear=True), sg.Push()],

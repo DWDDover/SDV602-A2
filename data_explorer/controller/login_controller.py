@@ -3,6 +3,7 @@ from data_explorer.controller.remote_controller import RemoteController
 from data_explorer.data.user_repository import UserRepository
 from data_explorer.view.login_view import LoginView
 from data_explorer.view.register_view import RegisterView
+from data_explorer.view.remote_view import RemoteView
 
 class LoginController:
     
@@ -61,6 +62,6 @@ class LoginController:
 
         if user is not None:
             login_view.close()
-            remote_controller = RemoteController(user)
+            remote_controller = RemoteController(user, RemoteView())
             remote_controller.run()
         

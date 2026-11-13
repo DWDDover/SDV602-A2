@@ -187,7 +187,21 @@ The local controller now has a method to generate the chart data and to start a 
 
 LocalDESController now needs similar refactoring, each event behaviour will be replaced with a method that takes the values that are read from the window, allowing each method to be called in the headless testing. The append, replace, and generate new DES logic was moved into three new methods which take the values they need. The actual events that call the new methods read the values from the window, meaning in my tests these methods can be tested without reliance on the GUI
 
-With these refactors in mind the remote mode equivalents of the controllers will be created with decoupling in mind from the start.
+With these refactors in mind the remote mode equivalents of the controllers will be created with decoupling from the start.
+
+## Remote Controller
+
+I started by making the methods that the window events will use, these are:
+
+create_session - adds the users new session to the database with the name they wrote, opens the DES controller for that new session
+join_session - takes the session ID from the session selected in the list and retrieves that session and passes it into a new DES controller
+logout - returns the user to the login screen and closes all their open DES windows, also deletes all that users sessions from the database. (Need to work out what happens to other users in these sessions)
+delete_session - deletes the selected session from the list, popup denying permission if the user does not own that session. (need to work out as above what happens to users in the session)
+upload_data - Uploads the selected file to the database with the users id to identify it as their file
+
+Each method is used inside the run loops relevant event, which takes values from the window to pass into the method, this ensures the methods can be ran with defined values in the headless testing.
+
+
 
 
 

@@ -4,7 +4,7 @@ import FreeSimpleGUI as sg
 class RemoteView:
 
     def __init__(self):
-        sg.theme("DarkRed1")
+        sg.theme("LightGreen9")
         
         session_box = [
             [sg.Listbox(values=[], size=(30, 10), key='-SESSION_LIST-')],
@@ -22,7 +22,7 @@ class RemoteView:
             [sg.Frame('Join a session', session_box, pad=(20, 15)), sg.Push(), sg.Frame('Create a session', create_session_box, pad=(20, 15))],
             [sg.VPush()],
             [sg.Push(),sg.Text("upload a CSV:"), sg.Input(key="-FILE-", enable_events=True), sg.FileBrowse(button_text='Browse', file_types=(('CSV Files', '*.csv'),)), sg.Push(),],
-            [sg.Push(),sg.Text('Data name:'), sg.Input(size=(40, 5), key='-DATA-NAME-'), sg.Button('Upload'), sg.Push(),],
+            [sg.Push(),sg.Text('Data name:'), sg.Input(size=(40, 5), key='-DATA-NAME-'), sg.Button('Upload', key='-UPLOAD_DATA-'), sg.Push(),],
         ]
         
         self.window = sg.Window("Remote Mode", self.layout, size=(700, 500), finalize=True)

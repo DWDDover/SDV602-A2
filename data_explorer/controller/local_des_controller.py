@@ -45,7 +45,7 @@ class LocalDESController:
             self.view.show_error(f"Error updating chart data: {str(e)}")
             return
         
-    def generate_des(self, chart_title, x_key, y_key, series_key):
+    def generate_des(self, x_key, y_key, series_key):
         if self.data_source is None:
             self.view.show_error("Please select a CSV file first.")
             return None
@@ -64,8 +64,8 @@ class LocalDESController:
         dv = DataVisualiser(self.data_source, x_key, y_key, series_key)
         
         try:
-            chart_data = dv.create_chart_data(chart_title, x_key, y_key, series_key)
-            return chart_data
+            chart_data = dv.create_chart_data(self.chart_data.title, x_key, y_key, series_key)
+            self.view.draw_chart(chart_data)
         except DataExplorerException as e:
             self.view.show_error(str(e))
             return None
@@ -84,8 +84,7 @@ class LocalDESController:
                 
             if event == 'Generate new DES':
                 
-                self.chart_data = self.generate_des(
-                    values["-CHART-TITLE-"],
+                self.generate_des(
                     values["-X-KEY-"],
                     values["-Y-KEY-"],
                     values["-SERIES_KEY-"]
