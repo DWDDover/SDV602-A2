@@ -20,3 +20,7 @@ class UserRepository:
             return None  #duplociate username
         user_id = self.db_manager.insert_one("users", {"name": username, "password": hashed_password})
         return User(user_id=str(user_id), username=username)
+    
+    ##mehtod used only to clean up test data
+    def delete_user(self, username):
+        self.db_manager.delete_one_by_id("users", self.db_manager.find_one_by_name("users", username)["_id"])

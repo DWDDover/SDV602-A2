@@ -7,14 +7,34 @@ from data_explorer.controller.data_visualiser import DataVisualiser
 from data_explorer.data.message_repository import MessageRepository
 from data_explorer.data.session_repository import SessionRepository
 from data_explorer.data.data_source_repository import DataSourceRepository
+from data_explorer.data.user_repository import UserRepository
 from data_explorer.data.file_manager import FileManager
 from data_explorer.testing.test_views import TestLocalView
 
 def testing_run():
-    ##Local mode testing
-    test_local_mode()
+    tests = [
+        ("local mode", test_local_mode),
+        ("login and registration", test_login_and_registration),
+    ]
+    failed_tests = 0
+
+    for name, test in tests:
+        try:
+            test()
+        except AssertionError as error:
+            failed_tests += 1
+            print(f"FAIL: {name}: {error}")
+        except Exception as error:
+            failed_tests += 1
+            print(f"ERROR: {name}: {type(error).__name__}: {error}")
+        else:
+            print(f"PASS: {name}")
+
+    if failed_tests:
+        raise SystemExit(f"{failed_tests} test(s) failed")
     
 def test_local_mode():
+    ##Also tests file manager, data visualiser, and local controller
     file_manager = FileManager()
     test_local_view = TestLocalView()
     lc = LocalController(file_manager, test_local_view)
@@ -66,3 +86,30 @@ def test_local_mode():
     )
     assert chart_data is None
     assert empty_controller.local_view.error_message == "Please select a CSV file first."
+    
+def test_login_and_registration():
+    ##Also tests user repository and database manager
+    ur = UserRepository()
+    ur.delete_user("newuser")
+
+    try:
+        ##valid new user registration
+        result = ur.register("newuser", "newpassword")
+        assert result is not None
+        assert result.username == "newuser"
+
+        ##valid login
+        result = ur.login("newuser", "newpassword")
+        assert result is not None
+        assert result.username == "newuser"
+
+        ##invalid login
+        result = ur.login("newuser", "wrongpassword")
+        assert result is None
+        
+        ##invalid new user registration (username already exists)
+        result = ur.register("newuser", "password1")
+        assert result is None
+    finally:
+        ##Clean up the database even when an assertion fails
+        ur.delete_user("newuser")

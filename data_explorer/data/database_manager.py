@@ -35,3 +35,4 @@ class DatabaseManager:
     
     def find_one_by_name(self, collection, name):
         return self.get_collection(collection).find_one({"name": name})
+    

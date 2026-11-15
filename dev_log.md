@@ -237,7 +237,11 @@ Login
 
 Remote Mode
 
-For local mode testing I went through each of its functions and used assert to test each one. I also tested error cases such as generating a chart with missing keys, and generating a chart before file selection. In order to test some functions I made a fake test view that has an error message, data source and column values attributes. I will make a similar test view for the other parts of the application.
+For local mode testing I went through each of its functions and used assert to test each one. I also tested error cases such as generating a chart with missing keys, and generating a chart before file selection. In order to test some functions I made a fake test view that has an error message, data source and column values attributes. I will make a similar test view for the other parts of the application. Tetsting login involed testing the login controllers methods, through these methods, the database manager and user repository are also tested. For the login tests that use the database I had to make a new method in user respository to delete a user. This helps clean up the test data each time the tests are run.
+
+At this point I changed the test to a format that adctually displays the test results. In the provious format the test would say nothing unless failed and failing a test would end the whole test run. The login test which needs the database conneciton was also wrpaped in a try so that the clean up in the finally blockl would always execute, ensuring the database is clean for the next test.
+
+
 
 
 
