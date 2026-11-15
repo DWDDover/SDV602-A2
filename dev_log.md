@@ -237,7 +237,7 @@ Login
 
 Remote Mode
 
-### Local Mode
+For local mode testing I went through each of its functions and used assert to test each one. I also tested error cases such as generating a chart with missing keys, and generating a chart before file selection. In order to test some functions I made a fake test view that has an error message, data source and column values attributes. I will make a similar test view for the other parts of the application.
 
 
 
