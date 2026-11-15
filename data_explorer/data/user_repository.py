@@ -23,4 +23,6 @@ class UserRepository:
     
     ##mehtod used only to clean up test data
     def delete_user(self, username):
-        self.db_manager.delete_one_by_id("users", self.db_manager.find_one_by_name("users", username)["_id"])
+        user = self.db_manager.find_one_by_name("users", username)
+        if user is not None:
+            self.db_manager.delete_one_by_id("users", user["_id"])

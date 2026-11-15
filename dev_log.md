@@ -241,6 +241,10 @@ For local mode testing I went through each of its functions and used assert to t
 
 At this point I changed the test to a format that adctually displays the test results. In the provious format the test would say nothing unless failed and failing a test would end the whole test run. The login test which needs the database conneciton was also wrpaped in a try so that the clean up in the finally blockl would always execute, ensuring the database is clean for the next test.
 
+Another change I had to make to get testing to work was splitting the create session and join sessions logic to include a third handler that actually starts the DES process. This will allow my tests to pass the fake view into this method. I also had to make a method to delte data sources here in order to clean up the test data in the database again. I also updated the test runner again to include the error stiring of the last failed test for easier debugging.
+
+In a future iteration a better way of doing htese tests would have been a single function per test, allowing for a more detailed description of what is passing and failing.
+
 
 
 

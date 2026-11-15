@@ -23,6 +23,9 @@ class RemoteController:
         except DataExplorerException as e:
             self.remote_view.show_error(str(e))
             return
+        return session
+        
+    def start_des_process(self, session):
         dc = RemoteDESController(session, self.user, RemoteDESView)
         process = Process(target=dc.run)
         process.start()
@@ -37,10 +40,7 @@ class RemoteController:
         except DataExplorerException as e:
             self.remote_view.show_error(str(e))
             return
-        dc = RemoteDESController(session, self.user, RemoteDESView)
-        process = Process(target=dc.run)
-        process.start()
-        self.active_sessions.append(process)
+        return session
         
     def logout(self):
         self.session_repository.delete_sessions_by_host_id(self.user.user_id)
@@ -98,7 +98,9 @@ class RemoteController:
                 if not session_name:
                     session_name = f"{self.user.username}'s session"
                 private = values['-PRIVATE-']
-                self.create_session(session_name, self.user.user_id, private)
+                session = self.create_session(session_name, self.user.user_id, private)
+                if session is not None:
+                    self.start_des_process(session)
                 
             if event == '-JOIN_SESSION-':
                 selected_sessions = values['-SESSION_LIST-']
@@ -107,7 +109,9 @@ class RemoteController:
                     continue
                 session = selected_sessions[0]
                 session_id = session.session_id
-                self.join_session(session_id)
+                session = self.join_session(session_id)
+                if session is not None: 
+                    self.start_des_process(session)
 
 
             if event == '-REFRESH_SESSIONS-':

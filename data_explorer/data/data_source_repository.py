@@ -27,3 +27,6 @@ class DataSourceRepository:
             ## the sources in the list do not hold the data, they are just for the controlelr to retrieve the selected ID.
             sources.append(DataSource(name=source["name"], data_source_id=str(source["_id"])))
         return sources
+    
+    def delete_data_sources_by_user_id(self, user_id):
+        self.db_manager.get_collection("data_sources").delete_many({"user_id": user_id})

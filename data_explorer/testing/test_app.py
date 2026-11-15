@@ -1,20 +1,21 @@
 from pathlib import Path
+import traceback
 
 from data_explorer.controller.local_controller import LocalController
 from data_explorer.controller.remote_controller import RemoteController
-from data_explorer.controller.login_controller import LoginController
-from data_explorer.controller.data_visualiser import DataVisualiser
+from data_explorer.controller.remote_des_controller import RemoteDESController
 from data_explorer.data.message_repository import MessageRepository
 from data_explorer.data.session_repository import SessionRepository
 from data_explorer.data.data_source_repository import DataSourceRepository
 from data_explorer.data.user_repository import UserRepository
 from data_explorer.data.file_manager import FileManager
-from data_explorer.testing.test_views import TestLocalView
+from data_explorer.testing.test_views import TestLocalView, TestRemoteView
 
 def testing_run():
     tests = [
         ("local mode", test_local_mode),
         ("login and registration", test_login_and_registration),
+        ("remote mode", test_remote_mode),
     ]
     failed_tests = 0
 
@@ -23,10 +24,12 @@ def testing_run():
             test()
         except AssertionError as error:
             failed_tests += 1
-            print(f"FAIL: {name}: {error}")
+            print(f"FAIL: {name}: {error!r}")
+            traceback.print_exc()
         except Exception as error:
             failed_tests += 1
             print(f"ERROR: {name}: {type(error).__name__}: {error}")
+            traceback.print_exc()
         else:
             print(f"PASS: {name}")
 
@@ -113,3 +116,60 @@ def test_login_and_registration():
     finally:
         ##Clean up the database even when an assertion fails
         ur.delete_user("newuser")
+        
+def test_remote_mode():
+    ##Also tests message repository, session repository, data source repository, and remote controller
+    mr = MessageRepository()
+    sr = SessionRepository()
+    dsr = DataSourceRepository()
+    ur = UserRepository()
+    ur.delete_user("testuser")
+    user = ur.register("testuser", "testpassword")
+    assert user is not None
+    rc = RemoteController(user, TestRemoteView())
+    rdc = RemoteDESController(None, rc.user, TestRemoteView())
+    rdc.data_source_repository = dsr
+    rdc.session_repository = sr
+    rdc.view = TestRemoteView()
+
+    try:
+
+        ##creatgin a session and joining it
+        session = rc.create_session("Test Session", rc.user.user_id, private=False)
+        assert session is not None
+        
+        join_session = rc.join_session(session.session_id)
+        assert join_session is not None
+        
+        ##Uploading a data source
+        test_data_path = Path(__file__).resolve().parents[1] / "test_data"
+        rc.upload_data(str(test_data_path / "bd-natural-increase-2010-2014.csv"), "Test Data")
+        rc.upload_data(str(test_data_path / "bd-natural-increase-2015-2019.csv"), "Test Data 2")
+        data_sources = dsr.get_sources_by_user_id(rc.user.user_id)
+        assert len(data_sources) > 0
+        
+        ##Rremote DES functionality
+        rdc.session = session
+        rdc.data_source = dsr.get_data_source_by_id(data_sources[0].data_source_id)
+        rdc.generate_chart("Births_Deaths_or_Natural_Increase", "Period", "Count")
+        assert rdc.chart_data is not None
+        rdc.append_data(dsr.get_data_source_by_id(data_sources[1].data_source_id))
+        ##check that the data source has been updated with the new data
+        assert len(rdc.data_source.data) > 25
+        rdc.replace_data(data_sources[1])
+        assert rdc.data_source.data == dsr.get_data_source_by_id(data_sources[1].data_source_id).data
+        
+        ##Chat functionality
+        rdc.message_repository = mr
+        rdc.send_message("test message")
+        messages = mr.get_messages_by_session(session.session_id)
+        assert len(messages) > 0
+        rdc.send_message("")
+        assert rdc.view.error_message == "Cannot send empty message."
+
+
+    finally:
+        ##clean up test data
+        dsr.delete_data_sources_by_user_id(rc.user.user_id)
+        sr.delete_sessions_by_host_id(rc.user.user_id)
+        ur.delete_user("testuser")
